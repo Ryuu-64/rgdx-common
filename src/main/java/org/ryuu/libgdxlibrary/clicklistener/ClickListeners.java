@@ -6,12 +6,12 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import org.ryuu.functional.IAction;
 import org.ryuu.functional.IFunc5Arg;
-import org.ryuu.libgdxlibrary.shader.IShaderProgram;
+import org.ryuu.libgdxlibrary.shader.ISetShaderProgram;
+import org.ryuu.libgdxlibrary.shader.Shaders;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 import static com.badlogic.gdx.utils.Align.center;
-import static org.ryuu.libgdxlibrary.shader.Shaders.LIGHT_GRAY;
-import static org.ryuu.libgdxlibrary.util.ActionUtil.of;
+import static org.ryuu.libgdxlibrary.action.ActionUtil.of;
 
 public class ClickListeners {
     private ClickListeners() {
@@ -43,8 +43,8 @@ public class ClickListeners {
         return new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                if (actor instanceof IShaderProgram) {
-                    ((IShaderProgram) actor).setShader(LIGHT_GRAY);
+                if (actor instanceof ISetShaderProgram) {
+                    ((ISetShaderProgram) actor).setShaderProgram(Shaders.LIGHT_GRAY);
                 } else {
                     actor.setColor(Color.LIGHT_GRAY);
                 }
@@ -53,8 +53,8 @@ public class ClickListeners {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                if (actor instanceof IShaderProgram) {
-                    ((IShaderProgram) actor).setShader(null);
+                if (actor instanceof ISetShaderProgram) {
+                    ((ISetShaderProgram) actor).setShaderProgram(null);
                 } else {
                     actor.setColor(Color.WHITE);
                 }
@@ -66,12 +66,16 @@ public class ClickListeners {
         return new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                if (isTouchValid.invoke(event, x, y, pointer, button)) {
-                    actor.setColor(Color.LIGHT_GRAY);
-                    return true;
-                } else {
+                if (!isTouchValid.invoke(event, x, y, pointer, button)) {
                     return false;
                 }
+
+                if (actor instanceof ISetShaderProgram) {
+                    ((ISetShaderProgram) actor).setShaderProgram(Shaders.LIGHT_GRAY);
+                } else {
+                    actor.setColor(Color.LIGHT_GRAY);
+                }
+                return true;
             }
 
             @Override

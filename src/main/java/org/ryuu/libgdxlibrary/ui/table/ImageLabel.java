@@ -8,7 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import org.ryuu.functional.Action;
 import org.ryuu.libgdxlibrary.util.Actors;
-import org.ryuu.libgdxlibrary.util.Assets;
 
 import java.util.HashMap;
 import java.util.Stack;

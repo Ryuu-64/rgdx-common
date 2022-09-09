@@ -1,4 +1,4 @@
-package org.ryuu.libgdxlibrary.util;
+package org.ryuu.libgdxlibrary.action;
 
 import com.badlogic.gdx.scenes.scene2d.Action;
 import org.ryuu.functional.IAction;

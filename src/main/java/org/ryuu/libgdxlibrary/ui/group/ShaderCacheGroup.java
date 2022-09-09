@@ -10,15 +10,15 @@ import org.ryuu.libgdxlibrary.shader.IShaderProgram;
 public class ShaderCacheGroup extends Group implements IShaderProgram {
     @Getter
     @Setter
-    private ShaderProgram shader;
+    private ShaderProgram shaderProgram;
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (shader == null) {
+        if (shaderProgram == null) {
             super.draw(batch, parentAlpha);
         } else {
             ShaderProgram batchShader = batch.getShader();
-            batch.setShader(shader);
+            batch.setShader(shaderProgram);
             super.draw(batch, parentAlpha);
             batch.setShader(batchShader);
         }
@@ -28,7 +28,7 @@ public class ShaderCacheGroup extends Group implements IShaderProgram {
     public String toString() {
         return super.toString() + "\n" +
                 "ShaderCacheGroup{" +
-                "shader=" + shader +
+                "shader=" + shaderProgram +
                 '}';
     }
 }
