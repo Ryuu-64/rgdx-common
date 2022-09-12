@@ -51,11 +51,7 @@ public class ClickListeners {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                if (actor instanceof ISetShaderProgram) {
-                    ((ISetShaderProgram) actor).setShaderProgram(null);
-                } else {
-                    actor.setColor(Color.WHITE);
-                }
+                unsetColorLightGray(actor);
             }
         };
     }
@@ -64,17 +60,17 @@ public class ClickListeners {
         return new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                if (!conditionValid.invoke(event, x, y, pointer, button)) {
-                    return false;
+                if (conditionValid.invoke(event, x, y, pointer, button)) {
+                    setColorLightGray(actor);
                 }
-
-                setColorLightGray(actor);
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                actor.setColor(Color.WHITE);
+                if (conditionValid.invoke(event, x, y, pointer, button)) {
+                    unsetColorLightGray(actor);
+                }
             }
         };
     }
@@ -100,10 +96,19 @@ public class ClickListeners {
 
     private static void setColorLightGray(Actor actor) {
         if (actor instanceof IShaderProgram) {
-            ((ISetShaderProgram) actor).setShaderProgram(Shaders.COLOR_MULTIPLIER);
-            ((IGetShaderProgram) actor).getShaderProgram().setAttributef("a_multiplierColor", Color.LIGHT_GRAY.r, Color.LIGHT_GRAY.g, Color.LIGHT_GRAY.b, Color.LIGHT_GRAY.a);
+            ((ISetShaderProgram) actor).setShaderProgram(Shaders.HDR_COLOR);
+            ((IGetShaderProgram) actor).getShaderProgram().setAttributef("a_intensity", 1.35f, 0, 0, 0);
+            ((IGetShaderProgram) actor).getShaderProgram().setAttributef("a_multipleColor", 1f, 1f, 1f, 1f);
         } else {
             actor.setColor(Color.LIGHT_GRAY);
+        }
+    }
+
+    private static void unsetColorLightGray(Actor actor) {
+        if (actor instanceof ISetShaderProgram) {
+            ((ISetShaderProgram) actor).setShaderProgram(null);
+        } else {
+            actor.setColor(Color.WHITE);
         }
     }
 }
