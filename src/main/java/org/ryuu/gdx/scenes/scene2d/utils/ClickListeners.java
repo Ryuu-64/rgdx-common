@@ -41,17 +41,51 @@ public class ClickListeners {
         });
     }
 
-    public static ClickListener newDownUpColorChange(Actor actor) {
+    public static ClickListener newDownUpColorChange(Actor actor, Color color, float intensity) {
         return new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                setColorLightGray(actor);
+                setColor(actor, color, intensity);
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                unsetColorLightGray(actor);
+                unsetColor(actor);
+            }
+        };
+    }
+
+    public static ClickListener newDownUpColorChange(Actor actor) {
+        return new ClickListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                setColor(actor, Color.WHITE, 1.35f);
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                unsetColor(actor);
+            }
+        };
+    }
+
+    public static ClickListener newDownUpColorChange(Actor actor, IFunc5Arg<InputEvent, Float, Float, Integer, Integer, Boolean> conditionValid, Color color, float intensity) {
+        return new ClickListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                if (conditionValid.invoke(event, x, y, pointer, button)) {
+                    setColor(actor, color, intensity);
+                }
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                if (conditionValid.invoke(event, x, y, pointer, button)) {
+                    unsetColor(actor);
+                }
             }
         };
     }
@@ -61,7 +95,7 @@ public class ClickListeners {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 if (conditionValid.invoke(event, x, y, pointer, button)) {
-                    setColorLightGray(actor);
+                    setColor(actor, Color.WHITE, 1.35f);
                 }
                 return true;
             }
@@ -69,7 +103,7 @@ public class ClickListeners {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 if (conditionValid.invoke(event, x, y, pointer, button)) {
-                    unsetColorLightGray(actor);
+                    unsetColor(actor);
                 }
             }
         };
@@ -94,17 +128,17 @@ public class ClickListeners {
         };
     }
 
-    private static void setColorLightGray(Actor actor) {
+    private static void setColor(Actor actor, Color color, float intensity) {
         if (actor instanceof IShaderProgram) {
             ((ISetShaderProgram) actor).setShaderProgram(Shaders.HDR_COLOR);
-            ((IGetShaderProgram) actor).getShaderProgram().setAttributef("a_intensity", 1.35f, 0, 0, 0);
-            ((IGetShaderProgram) actor).getShaderProgram().setAttributef("a_multipleColor", 1f, 1f, 1f, 1f);
+            ((IGetShaderProgram) actor).getShaderProgram().setAttributef("a_intensity", intensity, 0, 0, 0);
+            ((IGetShaderProgram) actor).getShaderProgram().setAttributef("a_multipleColor", color.r, color.g, color.b, color.a);
         } else {
             actor.setColor(Color.LIGHT_GRAY);
         }
     }
 
-    private static void unsetColorLightGray(Actor actor) {
+    private static void unsetColor(Actor actor) {
         if (actor instanceof ISetShaderProgram) {
             ((ISetShaderProgram) actor).setShaderProgram(null);
         } else {
