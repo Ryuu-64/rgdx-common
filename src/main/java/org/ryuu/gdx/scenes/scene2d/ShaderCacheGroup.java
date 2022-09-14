@@ -5,8 +5,10 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.ryuu.gdx.graphics.opengl.IShaderProgram;
 
+@ToString
 public class ShaderCacheGroup extends Group implements IShaderProgram {
     @Getter
     @Setter
@@ -22,13 +24,5 @@ public class ShaderCacheGroup extends Group implements IShaderProgram {
             super.draw(batch, parentAlpha);
             batch.setShader(batchShader);
         }
-    }
-
-    @Override
-    public String toString() {
-        return "ShaderCacheGroup{" + "\n" +
-                super.toString() + "\n" +
-                "shader=" + shaderProgram +
-                '}';
     }
 }
