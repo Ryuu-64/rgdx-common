@@ -12,9 +12,9 @@ repositories {
 
 dependencies {
     // https://mvnrepository.com/artifact/com.badlogicgames.gdx/gdx
-    implementation group: 'com.badlogicgames.gdx', name: 'gdx', version: '1.11.0'
+    implementation group: 'com.badlogicgames.gdx', name: 'gdx', version: '1.9.9'
     // https://mvnrepository.com/artifact/com.badlogicgames.gdx/gdx-box2d
-    implementation group: 'com.badlogicgames.gdx', name: 'gdx-box2d', version: '1.11.0'
+    implementation group: 'com.badlogicgames.gdx', name: 'gdx-box2d', version: '1.9.9'
     // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.9.0'
     // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine

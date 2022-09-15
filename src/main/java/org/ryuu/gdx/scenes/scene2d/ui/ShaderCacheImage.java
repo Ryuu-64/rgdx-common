@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.badlogic.gdx.utils.Null;
 import com.badlogic.gdx.utils.Scaling;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,11 +24,11 @@ public class ShaderCacheImage extends Image implements IShaderProgram {
         super();
     }
 
-    public ShaderCacheImage(@Null NinePatch patch) {
+    public ShaderCacheImage(NinePatch patch) {
         super(patch);
     }
 
-    public ShaderCacheImage(@Null TextureRegion region) {
+    public ShaderCacheImage(TextureRegion region) {
         super(region);
     }
 
@@ -41,15 +40,15 @@ public class ShaderCacheImage extends Image implements IShaderProgram {
         super(skin, drawableName);
     }
 
-    public ShaderCacheImage(@Null Drawable drawable) {
+    public ShaderCacheImage(Drawable drawable) {
         super(drawable);
     }
 
-    public ShaderCacheImage(@Null Drawable drawable, Scaling scaling) {
+    public ShaderCacheImage(Drawable drawable, Scaling scaling) {
         super(drawable, scaling);
     }
 
-    public ShaderCacheImage(@Null Drawable drawable, Scaling scaling, int align) {
+    public ShaderCacheImage(Drawable drawable, Scaling scaling, int align) {
         super(drawable, scaling, align);
     }
 
