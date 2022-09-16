@@ -16,17 +16,17 @@ public class Aligns {
         self.setPosition(reference.getX(alignReference), reference.getY(alignReference), alignSelf);
     }
 
-    public static void align(Actor self, int align, float x, float y) {
-        align(self, align);
-        self.moveBy(x, y);
+    public static void align(Actor actor, int alignSelf, int alignParent, float x, float y) {
+        align(actor, alignSelf, alignParent);
+        actor.moveBy(x, y);
     }
 
-    public static void align(Actor self, int align) {
-        Group parent = self.getParent();
-        self.setPosition(
-                parent.getX(align) - parent.getX(),
-                parent.getY(align) - parent.getY(),
-                align
+    public static void align(Actor actor, int alignSelf, int alignParent) {
+        Group parent = actor.getParent();
+        actor.setPosition(
+                parent.getX(alignParent) - parent.getX(),
+                parent.getY(alignParent) - parent.getY(),
+                alignSelf
         );
     }
 }
