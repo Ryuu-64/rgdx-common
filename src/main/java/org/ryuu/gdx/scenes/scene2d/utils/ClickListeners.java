@@ -94,6 +94,11 @@ public class ClickListeners {
         };
     }
 
+    public static <T extends Actor> T addSizeChange(T actor) {
+        actor.addListener(newSizeChange(actor));
+        return actor;
+    }
+
     private static void setColor(Actor actor, Color color, float intensity) {
         if (actor instanceof IShaderProgram) {
             ((ISetShaderProgram) actor).setShaderProgram(Shaders.HDR_COLOR);
