@@ -9,6 +9,6 @@ public class Tables {
 
     public static void remove(Table table, Actor actor) {
         table.getCells().removeValue(table.getCell(actor), true);
-        table.invalidate();
+        table.pack();
     }
 }
