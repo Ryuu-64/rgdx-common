@@ -41,6 +41,11 @@ public class ClickListeners {
         });
     }
 
+    public static Actor addDownUpColorChange(Actor actor, Color color, float intensity) {
+        actor.addListener(newDownUpColorChange(actor, color, intensity));
+        return actor;
+    }
+
     public static ClickListener newDownUpColorChange(Actor actor, Color color, float intensity) {
         return new ClickListener() {
             @Override
@@ -101,7 +106,7 @@ public class ClickListeners {
 
     private static void setColor(Actor actor, Color color, float intensity) {
         if (actor instanceof IShaderProgram) {
-            ((ISetShaderProgram) actor).setShaderProgram(Shaders.HDR_COLOR);
+            ((ISetShaderProgram) actor).setShaderProgram(Shaders.HDR);
             ((IGetShaderProgram) actor).getShaderProgram().setAttributef("a_intensity", intensity, 0, 0, 0);
             ((IGetShaderProgram) actor).getShaderProgram().setAttributef("a_multipleColor", color.r, color.g, color.b, color.a);
         } else {
