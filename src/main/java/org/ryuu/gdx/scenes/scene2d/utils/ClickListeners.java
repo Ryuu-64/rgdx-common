@@ -107,8 +107,8 @@ public class ClickListeners {
     private static void setColor(Actor actor, Color color, float intensity) {
         if (actor instanceof IShaderProgram) {
             ((ISetShaderProgram) actor).setShaderProgram(Shaders.HDR);
+            ((IGetShaderProgram) actor).getShaderProgram().setAttributef("a_hdrColor", color.r, color.g, color.b, color.a);
             ((IGetShaderProgram) actor).getShaderProgram().setAttributef("a_intensity", intensity, 0, 0, 0);
-            ((IGetShaderProgram) actor).getShaderProgram().setAttributef("a_multipleColor", color.r, color.g, color.b, color.a);
         } else {
             actor.setColor(color);
         }

@@ -32,15 +32,15 @@ public class Shaders {
                         "uniform sampler2D u_texture;\n" +
                         "\n" +
                         "void main() {\n" +
-                        "    vec4 color = v_color * texture2D(u_texture, v_texCoords);\n" +
+                        "    vec4 color = texture2D(u_texture, v_texCoords) * v_color;\n" +
                         "    float grayScale = (color.r * 0.299 + color.g * 0.587 + color.b * 0.114);\n" +
                         "    gl_FragColor = vec4(grayScale, grayScale, grayScale, color.a);\n" +
                         "}"
         );
 
         if (!GRAY_SCALE.isCompiled()) {
-            Gdx.app.log("Shader", "Grayscale shader compile error!");
-            Gdx.app.log("Shader", GRAY_SCALE.getLog());
+            Gdx.app.log(Shaders.class.toString(), "Grayscale shader compile error!");
+            Gdx.app.log(Shaders.class.toString(), GRAY_SCALE.getLog());
         }
     }
 
@@ -50,36 +50,37 @@ public class Shaders {
         HDR = new ShaderProgram(
                 "attribute vec4 a_position;\n" +
                         "attribute vec4 a_color;\n" +
-                        "attribute vec4 a_multipleColor;\n" +
+                        "attribute vec4 a_hdrColor;\n" +
                         "attribute vec2 a_texCoord0;\n" +
                         "attribute float a_intensity;\n" +
+                        "uniform mat4 u_projTrans;\n" +
                         "varying vec4 v_color;\n" +
-                        "varying vec4 v_multipleColor;\n" +
+                        "varying vec4 v_hdrColor;\n" +
                         "varying vec2 v_texCoords;\n" +
                         "varying float v_intensity;\n" +
-                        "uniform mat4 u_projTrans;\n" +
                         "\n" +
                         "void main() {\n" +
                         "    v_color = a_color;\n" +
-                        "    v_multipleColor = a_multipleColor;\n" +
+                        "    v_hdrColor = a_hdrColor;\n" +
                         "    v_texCoords = a_texCoord0;\n" +
                         "    v_intensity = a_intensity;\n" +
                         "    gl_Position = u_projTrans * a_position;\n" +
                         "}",
                 "varying vec4 v_color;\n" +
-                        "varying vec4 v_multipleColor;\n" +
+                        "varying vec4 v_hdrColor;\n" +
                         "varying vec2 v_texCoords;\n" +
                         "varying float v_intensity;\n" +
                         "uniform sampler2D u_texture;\n" +
                         "\n" +
                         "void main() {\n" +
-                        "    gl_FragColor = v_color * vec4(texture2D(u_texture, v_texCoords).rgb * v_multipleColor * v_intensity, texture2D(u_texture, v_texCoords).a);\n" +
+                        "    vec4 hdrColor = v_hdrColor * v_intensity;\n" +
+                        "    gl_FragColor = texture2D(u_texture, v_texCoords) * v_color * hdrColor;\n" +
                         "}"
         );
 
         if (!HDR.isCompiled()) {
-            Gdx.app.log("Shader", "HDR Color shader compile error!");
-            Gdx.app.log("Shader", HDR.getLog());
+            Gdx.app.log(Shaders.class.toString(), "HDR shader compile error!");
+            Gdx.app.log(Shaders.class.toString(), HDR.getLog());
         }
     }
 }
