@@ -53,12 +53,12 @@ public class Actors {
         setSizeIsotropic(self, reference, 1);
     }
 
-    public static void setSizeByWidth(Actor actor, int width) {
+    public static void setSizeByWidth(Actor actor, float width) {
         float scale = width / actor.getWidth();
         actor.setSize(actor.getWidth() * scale, actor.getHeight() * scale);
     }
 
-    public static void setSizeByHeight(Actor actor, int height) {
+    public static void setSizeByHeight(Actor actor, float height) {
         float scale = height / actor.getHeight();
         actor.setSize(actor.getWidth() * scale, actor.getHeight() * scale);
     }

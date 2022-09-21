@@ -41,12 +41,12 @@ public class ClickListeners {
         });
     }
 
-    public static Actor addDownUpColorChange(Actor actor, Color color, float intensity) {
-        actor.addListener(newDownUpColorChange(actor, color, intensity));
+    public static <T extends Actor> T addColorChange(T actor, Color color, float intensity) {
+        actor.addListener(newColorChange(actor, color, intensity));
         return actor;
     }
 
-    public static ClickListener newDownUpColorChange(Actor actor, Color color, float intensity) {
+    public static ClickListener newColorChange(Actor actor, Color color, float intensity) {
         return new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -61,23 +61,9 @@ public class ClickListeners {
         };
     }
 
-    public static ClickListener newDownUpColorChange(Actor actor, IFunc5Arg<InputEvent, Float, Float, Integer, Integer, Boolean> conditionValid, Color color, float intensity) {
-        return new ClickListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                if (conditionValid.invoke(event, x, y, pointer, button)) {
-                    setColor(actor, color, intensity);
-                }
-                return true;
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                if (conditionValid.invoke(event, x, y, pointer, button)) {
-                    unsetColor(actor);
-                }
-            }
-        };
+    public static <T extends Actor> T addSizeChange(T actor) {
+        actor.addListener(newSizeChange(actor));
+        return actor;
     }
 
     public static ClickListener newSizeChange(Actor actor) {
@@ -97,11 +83,6 @@ public class ClickListeners {
                 return true;
             }
         };
-    }
-
-    public static <T extends Actor> T addSizeChange(T actor) {
-        actor.addListener(newSizeChange(actor));
-        return actor;
     }
 
     private static void setColor(Actor actor, Color color, float intensity) {
