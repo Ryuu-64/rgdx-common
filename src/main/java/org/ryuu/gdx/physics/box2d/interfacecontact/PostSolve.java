@@ -5,6 +5,6 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.Fixture;
 
 @FunctionalInterface
-public interface IPostSolve {
+public interface PostSolve {
     void postSolve(Contact contact, ContactImpulse impulse, Fixture self, Fixture other);
 }

@@ -8,8 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.ryuu.functional.IAction;
 import org.ryuu.functional.IAction2Arg;
-import org.ryuu.gdx.scenes.scene2d.IAfterVisibleChange;
-import org.ryuu.gdx.scenes.scene2d.ui.utils.Cells;
+import org.ryuu.gdx.scenes.scene2d.GetAfterVisibleChange;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,7 +21,7 @@ public class CellVisibleTable extends Table implements Disposable {
     @Getter
     @Setter
     private IAction setPosition;
-    private final ArrayList<IAfterVisibleChange> afterVisibleChangeSenders = new ArrayList<>();
+    private final ArrayList<GetAfterVisibleChange> afterVisibleChangeSenders = new ArrayList<>();
     private final IAction2Arg<Actor, Boolean> afterCellActorVisibleChange = (actor, visible) -> {
         Cell<Actor> cell = getCell(actor);
         if (visible) {
@@ -57,8 +56,8 @@ public class CellVisibleTable extends Table implements Disposable {
     @Override
 
     public <T extends Actor> Cell<T> add(T actor) {
-        if (actor instanceof IAfterVisibleChange) {
-            IAfterVisibleChange afterVisibleChange = (IAfterVisibleChange) actor;
+        if (actor instanceof GetAfterVisibleChange) {
+            GetAfterVisibleChange afterVisibleChange = (GetAfterVisibleChange) actor;
             afterVisibleChange.getAfterVisibleChange().add(afterCellActorVisibleChange);
             afterVisibleChangeSenders.add(afterVisibleChange);
         }
@@ -67,7 +66,7 @@ public class CellVisibleTable extends Table implements Disposable {
 
     @Override
     public void dispose() {
-        for (IAfterVisibleChange afterVisibleChange : afterVisibleChangeSenders) {
+        for (GetAfterVisibleChange afterVisibleChange : afterVisibleChangeSenders) {
             afterVisibleChange.getAfterVisibleChange().remove(afterCellActorVisibleChange);
         }
     }

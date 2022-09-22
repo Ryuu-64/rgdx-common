@@ -1,8 +1,8 @@
-package org.ryuu.gdx.graphics.opengl;
+package org.ryuu.gdx.graphics.glutils;
 
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 
 @FunctionalInterface
-public interface IGetShaderProgram {
+public interface GetShaderProgram {
     ShaderProgram getShaderProgram();
 }

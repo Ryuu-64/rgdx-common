@@ -6,10 +6,10 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.ryuu.gdx.graphics.opengl.IShaderProgram;
+import org.ryuu.gdx.graphics.glutils.ShaderProgramProperty;
 
 @ToString
-public class ShaderCacheGroup extends Group implements IShaderProgram {
+public class ShaderGroup extends Group implements ShaderProgramProperty {
     @Getter
     @Setter
     private ShaderProgram shaderProgram;

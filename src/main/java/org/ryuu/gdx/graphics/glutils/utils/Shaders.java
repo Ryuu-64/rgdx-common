@@ -1,4 +1,4 @@
-package org.ryuu.gdx.graphics.opengl.utils;
+package org.ryuu.gdx.graphics.glutils.utils;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;

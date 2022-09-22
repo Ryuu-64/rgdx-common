@@ -12,43 +12,43 @@ import com.badlogic.gdx.utils.Scaling;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.ryuu.gdx.graphics.opengl.IShaderProgram;
+import org.ryuu.gdx.graphics.glutils.ShaderProgramProperty;
 
 @ToString
-public class ShaderCacheImage extends Image implements IShaderProgram {
+public class ShaderImage extends Image implements ShaderProgramProperty {
     @Getter
     @Setter
     private ShaderProgram shaderProgram;
 
-    public ShaderCacheImage() {
+    public ShaderImage() {
         super();
     }
 
-    public ShaderCacheImage(NinePatch patch) {
+    public ShaderImage(NinePatch patch) {
         super(patch);
     }
 
-    public ShaderCacheImage(TextureRegion region) {
+    public ShaderImage(TextureRegion region) {
         super(region);
     }
 
-    public ShaderCacheImage(Texture texture) {
+    public ShaderImage(Texture texture) {
         super(texture);
     }
 
-    public ShaderCacheImage(Skin skin, String drawableName) {
+    public ShaderImage(Skin skin, String drawableName) {
         super(skin, drawableName);
     }
 
-    public ShaderCacheImage(Drawable drawable) {
+    public ShaderImage(Drawable drawable) {
         super(drawable);
     }
 
-    public ShaderCacheImage(Drawable drawable, Scaling scaling) {
+    public ShaderImage(Drawable drawable, Scaling scaling) {
         super(drawable, scaling);
     }
 
-    public ShaderCacheImage(Drawable drawable, Scaling scaling, int align) {
+    public ShaderImage(Drawable drawable, Scaling scaling, int align) {
         super(drawable, scaling, align);
     }
 

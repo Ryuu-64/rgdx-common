@@ -5,11 +5,10 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import org.ryuu.functional.IAction;
-import org.ryuu.functional.IFunc5Arg;
-import org.ryuu.gdx.graphics.opengl.IGetShaderProgram;
-import org.ryuu.gdx.graphics.opengl.ISetShaderProgram;
-import org.ryuu.gdx.graphics.opengl.IShaderProgram;
-import org.ryuu.gdx.graphics.opengl.utils.Shaders;
+import org.ryuu.gdx.graphics.glutils.GetShaderProgram;
+import org.ryuu.gdx.graphics.glutils.SetShaderProgram;
+import org.ryuu.gdx.graphics.glutils.ShaderProgramProperty;
+import org.ryuu.gdx.graphics.glutils.utils.Shaders;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 import static com.badlogic.gdx.utils.Align.center;
@@ -86,18 +85,18 @@ public class ClickListeners {
     }
 
     private static void setColor(Actor actor, Color color, float intensity) {
-        if (actor instanceof IShaderProgram) {
-            ((ISetShaderProgram) actor).setShaderProgram(Shaders.HDR);
-            ((IGetShaderProgram) actor).getShaderProgram().setAttributef("a_hdrColor", color.r, color.g, color.b, color.a);
-            ((IGetShaderProgram) actor).getShaderProgram().setAttributef("a_intensity", intensity, 0, 0, 0);
+        if (actor instanceof ShaderProgramProperty) {
+            ((SetShaderProgram) actor).setShaderProgram(Shaders.HDR);
+            ((GetShaderProgram) actor).getShaderProgram().setAttributef("a_hdrColor", color.r, color.g, color.b, color.a);
+            ((GetShaderProgram) actor).getShaderProgram().setAttributef("a_intensity", intensity, 0, 0, 0);
         } else {
             actor.setColor(color);
         }
     }
 
     private static void unsetColor(Actor actor) {
-        if (actor instanceof ISetShaderProgram) {
-            ((ISetShaderProgram) actor).setShaderProgram(null);
+        if (actor instanceof SetShaderProgram) {
+            ((SetShaderProgram) actor).setShaderProgram(null);
         } else {
             actor.setColor(Color.WHITE);
         }
