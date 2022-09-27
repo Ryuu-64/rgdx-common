@@ -10,8 +10,10 @@ import org.ryuu.gdx.graphics.glutils.SetShaderProgram;
 import org.ryuu.gdx.graphics.glutils.ShaderProgramProperty;
 import org.ryuu.gdx.graphics.glutils.utils.Shaders;
 
+import static com.badlogic.gdx.graphics.Color.*;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 import static com.badlogic.gdx.utils.Align.center;
+import static org.ryuu.gdx.graphics.glutils.utils.Shaders.*;
 import static org.ryuu.gdx.scenes.scene2d.utils.ActionUtil.of;
 
 public class ClickListeners {
@@ -78,7 +80,7 @@ public class ClickListeners {
                 float scaleX = actor.getScaleX();
                 float scaleY = actor.getScaleY();
                 isSizeChange = true;
-                actor.addAction(sequence(scaleTo(1.05f * scaleX, 1.05f * scaleY, 1 / 60F * 5), scaleTo(scaleX, scaleY, 1 / 60F * 5), of(() -> isSizeChange = false)));
+                actor.addAction(sequence(scaleTo(1.05f * scaleX, 1.05f * scaleY, 1 / 60f * 5), scaleTo(scaleX, scaleY, 1 / 60f * 5), of(() -> isSizeChange = false)));
                 return true;
             }
         };
@@ -86,9 +88,9 @@ public class ClickListeners {
 
     private static void setColor(Actor actor, Color color, float intensity) {
         if (actor instanceof ShaderProgramProperty) {
-            ((SetShaderProgram) actor).setShaderProgram(Shaders.HDR);
-            ((GetShaderProgram) actor).getShaderProgram().setAttributef("a_hdrColor", color.r, color.g, color.b, color.a);
-            ((GetShaderProgram) actor).getShaderProgram().setAttributef("a_intensity", intensity, 0, 0, 0);
+            ((SetShaderProgram) actor).setShaderProgram(HDR);
+            ((GetShaderProgram) actor).getShaderProgram().setAttributef(HDR_COLOR_ATTRIBUTE, color.r, color.g, color.b, color.a);
+            ((GetShaderProgram) actor).getShaderProgram().setAttributef(INTENSITY_ATTRIBUTE, intensity, 0, 0, 0);
         } else {
             actor.setColor(color);
         }
@@ -98,7 +100,7 @@ public class ClickListeners {
         if (actor instanceof SetShaderProgram) {
             ((SetShaderProgram) actor).setShaderProgram(null);
         } else {
-            actor.setColor(Color.WHITE);
+            actor.setColor(WHITE);
         }
     }
 }
