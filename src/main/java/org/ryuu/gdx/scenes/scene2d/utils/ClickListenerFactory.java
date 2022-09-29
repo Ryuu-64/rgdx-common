@@ -24,7 +24,7 @@ public class ClickListenerFactory {
         return new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                actor.addAction(delay(delay, of(onClick)));
+                actor.addAction(ActionUtil.delay(delay, onClick));
             }
         };
     }

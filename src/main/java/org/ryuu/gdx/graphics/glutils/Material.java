@@ -14,9 +14,6 @@ public class Material {
     private ShaderProgram shaderProgram;
     private final HashMap<String, Attributef> attributefMap = new HashMap<>();
 
-    public Material() {
-    }
-
     public void applyShaderParameters() {
         for (Map.Entry<String, Attributef> entry : attributefMap.entrySet()) {
             String name = entry.getKey();

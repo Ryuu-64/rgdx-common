@@ -24,7 +24,7 @@ public class ActionUtil {
 
     public static Action foreverDelay(float duration, IAction act) {
         return Actions.forever(Actions.sequence(
-                Actions.delay(duration, of(act))
+                ActionUtil.delay(duration, act)
         ));
     }
 
