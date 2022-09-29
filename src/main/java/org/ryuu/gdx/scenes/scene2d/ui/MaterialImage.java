@@ -11,54 +11,54 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Scaling;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
-import org.ryuu.gdx.graphics.glutils.ShaderProgramProperty;
+import org.ryuu.gdx.graphics.glutils.Material;
+import org.ryuu.gdx.graphics.glutils.MaterialProperty;
 
-@ToString
-public class ShaderImage extends Image implements ShaderProgramProperty {
+public class MaterialImage extends Image implements MaterialProperty {
     @Getter
     @Setter
-    private ShaderProgram shaderProgram;
+    private Material material;
 
-    public ShaderImage() {
+    public MaterialImage() {
         super();
     }
 
-    public ShaderImage(NinePatch patch) {
+    public MaterialImage(NinePatch patch) {
         super(patch);
     }
 
-    public ShaderImage(TextureRegion region) {
+    public MaterialImage(TextureRegion region) {
         super(region);
     }
 
-    public ShaderImage(Texture texture) {
+    public MaterialImage(Texture texture) {
         super(texture);
     }
 
-    public ShaderImage(Skin skin, String drawableName) {
+    public MaterialImage(Skin skin, String drawableName) {
         super(skin, drawableName);
     }
 
-    public ShaderImage(Drawable drawable) {
+    public MaterialImage(Drawable drawable) {
         super(drawable);
     }
 
-    public ShaderImage(Drawable drawable, Scaling scaling) {
+    public MaterialImage(Drawable drawable, Scaling scaling) {
         super(drawable, scaling);
     }
 
-    public ShaderImage(Drawable drawable, Scaling scaling, int align) {
+    public MaterialImage(Drawable drawable, Scaling scaling, int align) {
         super(drawable, scaling, align);
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (shaderProgram == null) {
+        if (material == null) {
             super.draw(batch, parentAlpha);
         } else {
             ShaderProgram batchShader = batch.getShader();
-            batch.setShader(shaderProgram);
+            batch.setShader(material.getShaderProgram());
+            material.applyShaderParameters();
             super.draw(batch, parentAlpha);
             batch.setShader(batchShader);
         }

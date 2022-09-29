@@ -5,22 +5,21 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
-import org.ryuu.gdx.graphics.glutils.ShaderProgramProperty;
+import org.ryuu.gdx.graphics.glutils.Material;
 
-@ToString
-public class ShaderGroup extends Group implements ShaderProgramProperty {
+public class MaterialGroup extends Group {
     @Getter
     @Setter
-    private ShaderProgram shaderProgram;
+    private Material material;
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (shaderProgram == null) {
+        if (material == null) {
             super.draw(batch, parentAlpha);
         } else {
             ShaderProgram batchShader = batch.getShader();
-            batch.setShader(shaderProgram);
+            batch.setShader(material.getShaderProgram());
+            material.applyShaderParameters();
             super.draw(batch, parentAlpha);
             batch.setShader(batchShader);
         }

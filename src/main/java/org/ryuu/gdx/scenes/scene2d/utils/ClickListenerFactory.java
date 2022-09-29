@@ -5,9 +5,10 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import org.ryuu.functional.IAction;
-import org.ryuu.gdx.graphics.glutils.GetShaderProgram;
-import org.ryuu.gdx.graphics.glutils.SetShaderProgram;
-import org.ryuu.gdx.graphics.glutils.ShaderProgramProperty;
+import org.ryuu.gdx.graphics.glutils.GetMaterial;
+import org.ryuu.gdx.graphics.glutils.Material;
+import org.ryuu.gdx.graphics.glutils.MaterialProperty;
+import org.ryuu.gdx.graphics.glutils.SetMaterial;
 
 import static com.badlogic.gdx.graphics.Color.WHITE;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
@@ -39,15 +40,30 @@ public class ClickListenerFactory {
 
     public static ClickListener colorChange(Actor actor, Color color, float intensity) {
         return new ClickListener() {
+            private Material actorMaterial;
+
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                setColor(actor, color, intensity);
+                if (actor instanceof MaterialProperty) {
+                    actorMaterial = ((GetMaterial) actor).getMaterial();
+                    Material material = new Material();
+                    material.setShaderProgram(HDR);
+                    material.setAttributef(HDR_COLOR_ATTRIBUTE, color.r, color.g, color.b, color.a);
+                    material.setAttributef(INTENSITY_ATTRIBUTE, intensity, 0, 0, 0);
+                    ((SetMaterial) actor).setMaterial(material);
+                } else {
+                    actor.setColor(color);
+                }
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                unsetColor(actor);
+                if (actor instanceof MaterialProperty) {
+                    ((SetMaterial) actor).setMaterial(actorMaterial);
+                } else {
+                    actor.setColor(WHITE);
+                }
             }
         };
     }
@@ -73,23 +89,5 @@ public class ClickListenerFactory {
                 return true;
             }
         };
-    }
-
-    private static void setColor(Actor actor, Color color, float intensity) {
-        if (actor instanceof ShaderProgramProperty) {
-            ((SetShaderProgram) actor).setShaderProgram(HDR);
-            ((GetShaderProgram) actor).getShaderProgram().setAttributef(HDR_COLOR_ATTRIBUTE, color.r, color.g, color.b, color.a);
-            ((GetShaderProgram) actor).getShaderProgram().setAttributef(INTENSITY_ATTRIBUTE, intensity, 0, 0, 0);
-        } else {
-            actor.setColor(color);
-        }
-    }
-
-    private static void unsetColor(Actor actor) {
-        if (actor instanceof SetShaderProgram) {
-            ((SetShaderProgram) actor).setShaderProgram(null);
-        } else {
-            actor.setColor(WHITE);
-        }
     }
 }
