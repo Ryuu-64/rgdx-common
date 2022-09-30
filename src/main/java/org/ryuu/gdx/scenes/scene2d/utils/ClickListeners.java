@@ -22,13 +22,23 @@ public class ClickListeners {
         actor.addListener(clickListener(onClick));
     }
 
+    public static <T extends Actor> T addColorChange(T actor, Color color) {
+        actor.addListener(colorChange(actor, color, 1));
+        return actor;
+    }
+
     public static <T extends Actor> T addColorChange(T actor, Color color, float intensity) {
         actor.addListener(colorChange(actor, color, intensity));
         return actor;
     }
 
-    public static <T extends Actor> T addSizeChange(T actor) {
-        actor.addListener(sizeChange(actor));
+    public static <T extends Actor> T addDownUpSizeChange(T actor) {
+        actor.addListener(downUpSizeChange(actor, 1.05f, 1 / 60f * 5, 1, 1 / 60f * 5));
+        return actor;
+    }
+
+    public static <T extends Actor> T addDownUpSizeChange(T actor, float downScale, float downScaleDuration, float upScale, float upScaleDuration) {
+        actor.addListener(downUpSizeChange(actor, downScale, downScaleDuration, upScale, upScaleDuration));
         return actor;
     }
 }

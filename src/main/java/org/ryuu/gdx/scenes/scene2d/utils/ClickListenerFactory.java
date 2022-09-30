@@ -10,11 +10,8 @@ import org.ryuu.gdx.graphics.glutils.Material;
 import org.ryuu.gdx.graphics.glutils.MaterialProperty;
 import org.ryuu.gdx.graphics.glutils.SetMaterial;
 
-import static com.badlogic.gdx.graphics.Color.WHITE;
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
-import static com.badlogic.gdx.utils.Align.center;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.scaleTo;
 import static org.ryuu.gdx.graphics.glutils.utils.Shaders.*;
-import static org.ryuu.gdx.scenes.scene2d.utils.ActionUtil.of;
 
 public class ClickListenerFactory {
     private ClickListenerFactory() {
@@ -51,8 +48,6 @@ public class ClickListenerFactory {
                     material.setAttributef(HDR_COLOR_ATTRIBUTE, color.r, color.g, color.b, color.a);
                     material.setAttributef(INTENSITY_ATTRIBUTE, intensity, 0, 0, 0);
                     ((SetMaterial) actor).setMaterial(material);
-                } else {
-                    actor.setColor(color);
                 }
                 return true;
             }
@@ -61,32 +56,25 @@ public class ClickListenerFactory {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 if (actor instanceof MaterialProperty) {
                     ((SetMaterial) actor).setMaterial(actorMaterial);
-                } else {
-                    actor.setColor(WHITE);
                 }
             }
         };
     }
 
-    public static ClickListener sizeChange(Actor actor) {
+    public static ClickListener downUpSizeChange(Actor actor, float downScale, float downScaleDuration, float upScale, float upScaleDuration) {
         return new ClickListener() {
-            private boolean isSizeChange;
+            private final float touchDownScaleX = actor.getScaleX();
+            private final float touchDownScaleY = actor.getScaleY();
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                if (isSizeChange) {
-                    return true;
-                }
-                actor.setOrigin(center);
-                float scaleX = actor.getScaleX();
-                float scaleY = actor.getScaleY();
-                isSizeChange = true;
-                actor.addAction(sequence(
-                        scaleTo(1.05f * scaleX, 1.05f * scaleY, 1 / 60f * 5),
-                        scaleTo(scaleX, scaleY, 1 / 60f * 5),
-                        of(() -> isSizeChange = false)
-                ));
+                actor.addAction(scaleTo(downScale * touchDownScaleX, downScale * touchDownScaleY, downScaleDuration));
                 return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                actor.addAction(scaleTo(upScale * touchDownScaleX, upScale * touchDownScaleY, upScaleDuration));
             }
         };
     }
