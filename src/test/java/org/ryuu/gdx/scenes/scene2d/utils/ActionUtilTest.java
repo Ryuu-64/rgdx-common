@@ -1,7 +1,6 @@
 package org.ryuu.gdx.scenes.scene2d.utils;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
