@@ -1,7 +1,10 @@
 package org.ryuu.gdx.scenes.scene2d.utils;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ActionUtilTest {
     @Test
@@ -10,7 +13,7 @@ public class ActionUtilTest {
         Actor actor = new Actor();
         actor.addAction(ActionUtil.of(() -> isExecute[0] = true));
         actor.act(0);
-        assert (isExecute[0]);
+        assertTrue(isExecute[0]);
     }
 
     @Test
@@ -19,9 +22,9 @@ public class ActionUtilTest {
         Actor actor = new Actor();
         actor.addAction(ActionUtil.delay(1, () -> isExecute[0] = true));
         actor.act(0);
-        assert !isExecute[0];
+        assertFalse(isExecute[0]);
         actor.act(1);
-        assert (isExecute[0]);
+        assertTrue(isExecute[0]);
     }
 
     @Test
@@ -35,7 +38,7 @@ public class ActionUtilTest {
             actor.act(timeStep);
             duration += timeStep;
         }
-        assert (actCount[0] == 5);
+        assertEquals(actCount[0], 5);
     }
 
     @Test
@@ -49,6 +52,6 @@ public class ActionUtilTest {
             actor.act(timeStep);
             duration += timeStep;
         }
-        assert (actCount[0] == 6);
+        assertEquals(actCount[0], 6);
     }
 }
