@@ -4,16 +4,13 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import org.junit.jupiter.api.Test;
 
 public class ActionUtilTest {
-    private ActionUtilTest() {
-    }
-
     @Test
     void ofTest() {
         final boolean[] isExecute = {false};
         Actor actor = new Actor();
         actor.addAction(ActionUtil.of(() -> isExecute[0] = true));
         actor.act(0);
-        assert isExecute[0];
+        assert (isExecute[0]);
     }
 
     @Test
@@ -24,7 +21,7 @@ public class ActionUtilTest {
         actor.act(0);
         assert !isExecute[0];
         actor.act(1);
-        assert isExecute[0];
+        assert (isExecute[0]);
     }
 
     @Test
@@ -38,7 +35,7 @@ public class ActionUtilTest {
             actor.act(timeStep);
             duration += timeStep;
         }
-        assert actCount[0] == 5;
+        assert (actCount[0] == 5);
     }
 
     @Test
@@ -52,6 +49,6 @@ public class ActionUtilTest {
             actor.act(timeStep);
             duration += timeStep;
         }
-        assert actCount[0] == 6;
+        assert (actCount[0] == 6);
     }
 }
