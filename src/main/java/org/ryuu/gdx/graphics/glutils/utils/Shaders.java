@@ -66,7 +66,11 @@ public class Shaders {
                         "    v_topRight = a_topRight;\n" +
                         "    gl_Position = u_projTrans * a_position;\n" +
                         "}",
-                "varying vec4 v_color;\n" +
+                "#ifdef GL_ES\n" +
+                        "precision mediump float;\n" +
+                        "#endif\n" +
+                        "\n" +
+                        "varying vec4 v_color;\n" +
                         "varying vec2 v_texCoords;\n" +
                         "varying vec2 v_bottomLeft;\n" +
                         "varying vec2 v_topRight;\n" +
@@ -105,7 +109,11 @@ public class Shaders {
                         "    v_intensity = a_intensity;\n" +
                         "    gl_Position = u_projTrans * a_position;\n" +
                         "}",
-                "varying vec4 v_color;\n" +
+                "#ifdef GL_ES\n" +
+                        "precision mediump float;\n" +
+                        "#endif\n" +
+                        "\n" +
+                        "varying vec4 v_color;\n" +
                         "varying vec4 v_hdrColor;\n" +
                         "varying vec2 v_texCoords;\n" +
                         "varying float v_intensity;\n" +
