@@ -10,16 +10,24 @@ public class ClickListeners {
     private ClickListeners() {
     }
 
-    public static void addDelayClickListener(Actor actor, IAction onClick) {
-        actor.addListener(delayClickListener(actor, onClick, 1 / 60f * 5));
+    public static <T extends Actor> T addDelayClickListener(T actor, IAction onClick) {
+        actor.addListener(clickListener(actor, 1 / 60f * 5, onClick));
+        return actor;
     }
 
-    public static void addDelayClickListener(Actor actor, IAction onClick, float delay) {
-        actor.addListener(delayClickListener(actor, onClick, delay));
+    public static <T extends Actor> T addDelayClickListener(T actor, float delay, IAction onClick) {
+        actor.addListener(clickListener(actor, delay, onClick));
+        return actor;
     }
 
-    public static void addClickListener(Actor actor, IAction onClick) {
+    public static <T extends Actor> T addClickListener(T actor, IAction onClick) {
         actor.addListener(clickListener(onClick));
+        return actor;
+    }
+
+    public static <T extends Actor> T addClickListener(T actor, float clickInterval, float delay, IAction onClick) {
+        actor.addListener(clickListener(actor, clickInterval, delay, onClick));
+        return actor;
     }
 
     public static <T extends Actor> T addColorChange(T actor, Color color) {
@@ -32,13 +40,13 @@ public class ClickListeners {
         return actor;
     }
 
-    public static <T extends Actor> T addDownUpSizeChange(T actor) {
-        actor.addListener(downUpSizeChange(actor, 1.05f, 1 / 60f * 5, 1, 1 / 60f * 5));
+    public static <T extends Actor> T addSizeChange(T actor) {
+        actor.addListener(sizeChange(actor, 1.05f, 1 / 60f * 5, 1, 1 / 60f * 5));
         return actor;
     }
 
-    public static <T extends Actor> T addDownUpSizeChange(T actor, float downScale, float downScaleDuration, float upScale, float upScaleDuration) {
-        actor.addListener(downUpSizeChange(actor, downScale, downScaleDuration, upScale, upScaleDuration));
+    public static <T extends Actor> T addSizeChange(T actor, float downScale, float downScaleDuration, float upScale, float upScaleDuration) {
+        actor.addListener(sizeChange(actor, downScale, downScaleDuration, upScale, upScaleDuration));
         return actor;
     }
 }

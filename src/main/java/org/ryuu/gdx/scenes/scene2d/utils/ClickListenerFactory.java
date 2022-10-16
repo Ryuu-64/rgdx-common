@@ -3,12 +3,12 @@ package org.ryuu.gdx.scenes.scene2d.utils;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import org.ryuu.functional.IAction;
 import org.ryuu.gdx.graphics.glutils.GetMaterial;
 import org.ryuu.gdx.graphics.glutils.Material;
 import org.ryuu.gdx.graphics.glutils.MaterialProperty;
 import org.ryuu.gdx.graphics.glutils.SetMaterial;
+import org.ryuu.gdx.scenes.scene2d.AdvanceClickListener;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.scaleTo;
 import static org.ryuu.gdx.graphics.glutils.utils.Shaders.*;
@@ -17,26 +17,35 @@ public class ClickListenerFactory {
     private ClickListenerFactory() {
     }
 
-    public static ClickListener delayClickListener(Actor actor, IAction onClick, float delay) {
-        return new ClickListener() {
+    public static AdvanceClickListener clickListener(Actor actor, float clickInterval, float delay, IAction onClick) {
+        return new AdvanceClickListener(clickInterval) {
             @Override
-            public void clicked(InputEvent event, float x, float y) {
+            public void clickedImpl(InputEvent event, float x, float y) {
                 actor.addAction(ActionUtil.delay(delay, onClick));
             }
         };
     }
 
-    public static ClickListener clickListener(IAction onClick) {
-        return new ClickListener() {
+    public static AdvanceClickListener clickListener(Actor actor, float delay, IAction onClick) {
+        return new AdvanceClickListener(0) {
             @Override
-            public void clicked(InputEvent event, float x, float y) {
+            public void clickedImpl(InputEvent event, float x, float y) {
+                actor.addAction(ActionUtil.delay(delay, onClick));
+            }
+        };
+    }
+
+    public static AdvanceClickListener clickListener(IAction onClick) {
+        return new AdvanceClickListener(0) {
+            @Override
+            public void clickedImpl(InputEvent event, float x, float y) {
                 onClick.invoke();
             }
         };
     }
 
-    public static ClickListener colorChange(Actor actor, Color color, float intensity) {
-        return new ClickListener() {
+    public static AdvanceClickListener colorChange(Actor actor, Color color, float intensity) {
+        return new AdvanceClickListener(0) {
             private Material actorMaterial;
 
             @Override
@@ -61,8 +70,8 @@ public class ClickListenerFactory {
         };
     }
 
-    public static ClickListener downUpSizeChange(Actor actor, float downScale, float downScaleDuration, float upScale, float upScaleDuration) {
-        return new ClickListener() {
+    public static AdvanceClickListener sizeChange(Actor actor, float downScale, float downScaleDuration, float upScale, float upScaleDuration) {
+        return new AdvanceClickListener(0) {
             private final float touchDownScaleX = actor.getScaleX();
             private final float touchDownScaleY = actor.getScaleY();
 
