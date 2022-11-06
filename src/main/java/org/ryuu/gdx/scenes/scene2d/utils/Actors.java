@@ -1,7 +1,11 @@
 package org.ryuu.gdx.scenes.scene2d.utils;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
+
+import static com.badlogic.gdx.utils.Align.*;
+import static com.badlogic.gdx.utils.Align.right;
 
 public class Actors {
     private Actors() {
@@ -17,11 +21,7 @@ public class Actors {
 
     public static void align(Actor actor, int alignSelf, int alignParent) {
         Group parent = actor.getParent();
-        actor.setPosition(
-                parent.getX(alignParent) - parent.getX(),
-                parent.getY(alignParent) - parent.getY(),
-                alignSelf
-        );
+        actor.setPosition(parent.getX(alignParent) - parent.getX(), parent.getY(alignParent) - parent.getY(), alignSelf);
     }
 
     public static void align(Actor actor, int alignSelf, int alignParent, float x, float y) {
@@ -29,37 +29,37 @@ public class Actors {
         actor.moveBy(x, y);
     }
 
-    public static void align(Actor self, Actor reference, int align) {
-        self.setPosition(reference.getX(align), reference.getY(align), align);
+    public static void align(Actor actor, Actor reference, int align) {
+        actor.setPosition(reference.getX(align), reference.getY(align), align);
     }
 
-    public static void align(Actor self, Actor reference, int align, float x, float y) {
-        self.setPosition(reference.getX(align), reference.getY(align), align);
-        self.moveBy(x, y);
+    public static void align(Actor actor, Actor reference, int align, float x, float y) {
+        actor.setPosition(reference.getX(align), reference.getY(align), align);
+        actor.moveBy(x, y);
     }
 
-    public static void align(Actor self, int alignSelf, Actor reference, int alignReference) {
-        self.setPosition(reference.getX(alignReference), reference.getY(alignReference), alignSelf);
+    public static void align(Actor actor, int alignSelf, Actor reference, int alignReference) {
+        actor.setPosition(reference.getX(alignReference), reference.getY(alignReference), alignSelf);
     }
 
-    public static void align(Actor self, int alignSelf, Actor reference, int alignReference, float x, float y) {
-        align(self, alignSelf, reference, alignReference);
-        self.moveBy(x, y);
+    public static void align(Actor actor, int alignSelf, Actor reference, int alignReference, float x, float y) {
+        align(actor, alignSelf, reference, alignReference);
+        actor.moveBy(x, y);
     }
 
-    public static void setSize(Actor self, Actor reference) {
-        self.setSize(reference.getWidth(), reference.getHeight());
+    public static void setSize(Actor actor, Actor reference) {
+        actor.setSize(reference.getWidth(), reference.getHeight());
     }
 
-    public static void setSizeIsotropic(Actor self, Actor reference, float scale) {
-        float widthScale = reference.getWidth() / self.getWidth();
-        float heightScale = reference.getHeight() / self.getHeight();
+    public static void setSizeIsotropic(Actor actor, Actor reference, float scale) {
+        float widthScale = reference.getWidth() / actor.getWidth();
+        float heightScale = reference.getHeight() / actor.getHeight();
         float targetScale = Math.min(widthScale, heightScale) * scale;
-        self.setSize(self.getWidth() * targetScale, self.getHeight() * targetScale);
+        actor.setSize(actor.getWidth() * targetScale, actor.getHeight() * targetScale);
     }
 
-    public static void setSizeIsotropic(Actor self, Actor reference) {
-        setSizeIsotropic(self, reference, 1);
+    public static void setSizeIsotropic(Actor actor, Actor reference) {
+        setSizeIsotropic(actor, reference, 1);
     }
 
     public static void setSizeByWidth(Actor actor, float width) {
@@ -70,5 +70,57 @@ public class Actors {
     public static void setSizeByHeight(Actor actor, float height) {
         float scale = height / actor.getHeight();
         actor.setSize(actor.getWidth() * scale, actor.getHeight() * scale);
+    }
+
+    public static Vector2 getLocalToStagePosition(Actor actor, int pivot) {
+        return getLocalToStagePosition(actor, pivot, 0, 0);
+    }
+
+    public static Vector2 getLocalToStagePosition(Actor actor, int pivot, float x, float y) {
+        float pivotX;
+        float pivotY;
+
+        if ((pivot & bottom) != 0) {
+            pivotY = 0;
+        } else if ((pivot & top) != 0) {
+            pivotY = 1;
+        } else {
+            pivotY = .5f;
+        }
+
+        if ((pivot & left) != 0) {
+            pivotX = 0;
+        } else if ((pivot & right) != 0) {
+            pivotX = 1;
+        } else {
+            pivotX = .5f;
+        }
+        return actor.localToStageCoordinates(new Vector2(actor.getWidth() * pivotX, actor.getHeight() * pivotY)).add(x, y);
+    }
+
+    public static Vector2 getLocalToActorPosition(Actor actor, int pivot, Actor reference) {
+        return getLocalToActorPosition(actor, pivot, reference, 0, 0);
+    }
+
+    public static Vector2 getLocalToActorPosition(Actor actor, int pivot, Actor reference, float x, float y) {
+        float pivotX;
+        float pivotY;
+
+        if ((pivot & bottom) != 0) {
+            pivotY = 0;
+        } else if ((pivot & top) != 0) {
+            pivotY = 1;
+        } else {
+            pivotY = .5f;
+        }
+
+        if ((pivot & left) != 0) {
+            pivotX = 0;
+        } else if ((pivot & right) != 0) {
+            pivotX = 1;
+        } else {
+            pivotX = .5f;
+        }
+        return actor.localToActorCoordinates(reference, new Vector2(actor.getWidth() * pivotX, actor.getHeight() * pivotY)).add(x, y);
     }
 }
