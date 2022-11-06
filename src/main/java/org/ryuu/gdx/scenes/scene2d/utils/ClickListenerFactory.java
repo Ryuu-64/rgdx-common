@@ -18,30 +18,15 @@ public class ClickListenerFactory {
     }
 
     public static AdvanceClickListener clickListener(Actor actor, float clickInterval, float delay, IAction onClick) {
-        return new AdvanceClickListener(clickInterval) {
-            @Override
-            public void clickedImpl(InputEvent event, float x, float y) {
-                actor.addAction(ActionUtil.delay(delay, onClick));
-            }
-        };
+        return new AdvanceClickListener(clickInterval, (event, x, y) -> actor.addAction(ActionUtil.delay(delay, onClick)));
     }
 
     public static AdvanceClickListener clickListener(Actor actor, float delay, IAction onClick) {
-        return new AdvanceClickListener(0) {
-            @Override
-            public void clickedImpl(InputEvent event, float x, float y) {
-                actor.addAction(ActionUtil.delay(delay, onClick));
-            }
-        };
+        return new AdvanceClickListener(0, (event, x, y) -> actor.addAction(ActionUtil.delay(delay, onClick)));
     }
 
     public static AdvanceClickListener clickListener(IAction onClick) {
-        return new AdvanceClickListener(0) {
-            @Override
-            public void clickedImpl(InputEvent event, float x, float y) {
-                onClick.invoke();
-            }
-        };
+        return new AdvanceClickListener(0, (event, x, y) -> onClick.invoke());
     }
 
     public static AdvanceClickListener colorChange(Actor actor, Color color, float intensity) {
