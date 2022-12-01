@@ -15,6 +15,10 @@ public class Material {
     private final HashMap<String, Attributef> attributefMap = new HashMap<>();
 
     public void applyShaderParameters() {
+        if (shaderProgram == null) {
+            return;
+        }
+
         for (Map.Entry<String, Attributef> entry : attributefMap.entrySet()) {
             String name = entry.getKey();
             Attributef attributef = entry.getValue();

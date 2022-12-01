@@ -53,7 +53,7 @@ public class MaterialImage extends Image implements MaterialProperty {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (material == null) {
+        if (material == null || material.getShaderProgram() == null) {
             super.draw(batch, parentAlpha);
         } else {
             ShaderProgram batchShader = batch.getShader();
