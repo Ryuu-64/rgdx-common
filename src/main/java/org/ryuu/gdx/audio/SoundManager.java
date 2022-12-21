@@ -36,9 +36,9 @@ public class SoundManager {
                     executePlaySoundList.addAll(playSoundList);
                     playSoundList.clear();
                 }
-                while (!executePlaySoundList.isEmpty()) {
-                    executePlaySoundList.remove(0).invoke();
-                }
+            }
+            while (!executePlaySoundList.isEmpty()) {
+                executePlaySoundList.remove(0).invoke();
             }
         }, 0, this.interval, MILLISECONDS);
     }
