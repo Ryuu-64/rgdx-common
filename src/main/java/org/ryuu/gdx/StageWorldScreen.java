@@ -8,12 +8,10 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.ToString;
+import org.ryuu.gdx.physics.box2d.WorldSettings;
 import org.ryuu.gdx.physics.box2d.interfacecontact.InterfaceContactListener;
 
 public class StageWorldScreen extends ScreenAdapter {
@@ -31,7 +29,7 @@ public class StageWorldScreen extends ScreenAdapter {
     private final Box2DDebugRenderer box2DDebugRenderer;
     @Getter
     private final WorldSettings worldSettings;
-    private float accumulatedDeltaTime = 0;
+    private float stepTime = 0;
 
     public StageWorldScreen(float designWorldWidth, float designWorldHeight, WorldSettings worldSettings) {
         this.worldSettings = worldSettings;
@@ -50,12 +48,14 @@ public class StageWorldScreen extends ScreenAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act();
         stage.draw();
-        accumulatedDeltaTime += Math.min(delta, worldSettings.fixedTimeStep * 10); // avoid death spiral
-        while (accumulatedDeltaTime >= worldSettings.fixedTimeStep) {
-            world.step(worldSettings.fixedTimeStep, worldSettings.velocityIterations, worldSettings.positionIterations);
-            accumulatedDeltaTime -= worldSettings.fixedTimeStep;
+        float fixedTimeStep = worldSettings.getFixedTimeStep();
+        stepTime += Math.min(delta, worldSettings.getMaxStepTime()); // avoid death spiral
+        while (stepTime >= fixedTimeStep) {
+            world.step(fixedTimeStep, worldSettings.getVelocityIterations(), worldSettings.getPositionIterations());
+            stepTime -= fixedTimeStep;
         }
-        box2DDebugRenderer.render(world, orthographicCamera.combined.cpy().scale(worldSettings.worldUnitPerMeter, worldSettings.worldUnitPerMeter, worldSettings.worldUnitPerMeter));
+        float worldUnitPerMeter = worldSettings.getWorldUnitPerMeter();
+        box2DDebugRenderer.render(world, orthographicCamera.combined.cpy().scale(worldUnitPerMeter, worldUnitPerMeter, worldUnitPerMeter));
     }
 
     @Override
@@ -68,26 +68,5 @@ public class StageWorldScreen extends ScreenAdapter {
         stage.dispose();
         world.dispose();
         box2DDebugRenderer.dispose();
-    }
-
-    public float meterToWorldUnit(float meter) {
-        return meter * worldSettings.worldUnitPerMeter;
-    }
-
-    public float worldUnitToMeter(float worldUnit) {
-        return worldUnit / worldSettings.worldUnitPerMeter;
-    }
-
-    @AllArgsConstructor
-    @ToString
-    public static class WorldSettings {
-        @Getter
-        private final float worldUnitPerMeter;
-        @Getter
-        private final float fixedTimeStep;
-        @Getter
-        private final int velocityIterations;
-        @Getter
-        private final int positionIterations;
     }
 }
