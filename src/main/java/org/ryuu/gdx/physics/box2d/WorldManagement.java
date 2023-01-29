@@ -14,4 +14,12 @@ public class WorldManagement {
 
     private WorldManagement() {
     }
+
+    public static float meterToUnit(float meter) {
+        return meter / worldSettings.getMeterPerUnit();
+    }
+
+    public static float unitToMeter(float unit) {
+        return unit * worldSettings.getMeterPerUnit();
+    }
 }

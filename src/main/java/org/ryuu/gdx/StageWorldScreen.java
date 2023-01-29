@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import lombok.Getter;
+import org.ryuu.gdx.physics.box2d.WorldManagement;
 import org.ryuu.gdx.physics.box2d.WorldSettings;
 import org.ryuu.gdx.physics.box2d.interfacecontact.InterfaceContactListener;
 
@@ -32,6 +33,9 @@ public class StageWorldScreen extends ScreenAdapter {
     private float stepTime = 0;
 
     public StageWorldScreen(float designWorldWidth, float designWorldHeight, WorldSettings worldSettings) {
+        if (worldSettings == null) {
+            throw new NullPointerException();
+        }
         this.worldSettings = worldSettings;
         orthographicCamera = new OrthographicCamera();
         extendViewport = new ExtendViewport(designWorldWidth, designWorldHeight, orthographicCamera);
@@ -48,14 +52,14 @@ public class StageWorldScreen extends ScreenAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act();
         stage.draw();
-        float fixedTimeStep = worldSettings.getFixedTimeStep();
         stepTime += Math.min(delta, worldSettings.getMaxStepTime()); // avoid death spiral
+        float fixedTimeStep = worldSettings.getFixedTimeStep();
         while (stepTime >= fixedTimeStep) {
             world.step(fixedTimeStep, worldSettings.getVelocityIterations(), worldSettings.getPositionIterations());
             stepTime -= fixedTimeStep;
         }
-        float worldUnitPerMeter = worldSettings.getWorldUnitPerMeter();
-        box2DDebugRenderer.render(world, orthographicCamera.combined.cpy().scale(worldUnitPerMeter, worldUnitPerMeter, worldUnitPerMeter));
+        float meterToUnit = WorldManagement.meterToUnit(1);
+        box2DDebugRenderer.render(world, orthographicCamera.combined.cpy().scale(meterToUnit, meterToUnit, meterToUnit));
     }
 
     @Override

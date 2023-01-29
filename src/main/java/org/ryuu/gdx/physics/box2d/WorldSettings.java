@@ -10,7 +10,7 @@ import lombok.ToString;
 public class WorldSettings {
     @Getter
     @Setter
-    private float worldUnitPerMeter;
+    private float meterPerUnit;
     @Getter
     @Setter
     private float fixedTimeStep;
