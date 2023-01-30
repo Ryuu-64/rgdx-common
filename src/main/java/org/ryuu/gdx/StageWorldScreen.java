@@ -34,7 +34,7 @@ public class StageWorldScreen extends ScreenAdapter {
 
     public StageWorldScreen(float designWorldWidth, float designWorldHeight, WorldSettings worldSettings) {
         if (worldSettings == null) {
-            throw new NullPointerException();
+            throw new IllegalArgumentException();
         }
         this.worldSettings = worldSettings;
         orthographicCamera = new OrthographicCamera();
