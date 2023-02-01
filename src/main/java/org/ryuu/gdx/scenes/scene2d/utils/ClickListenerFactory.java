@@ -21,10 +21,6 @@ public class ClickListenerFactory {
         return new AdvanceClickListener(clickInterval, (event, x, y) -> actor.addAction(ActionUtil.delay(delay, onClick)));
     }
 
-    public static AdvanceClickListener clickListener(Actor actor, float delay, IAction onClick) {
-        return new AdvanceClickListener(0, (event, x, y) -> actor.addAction(ActionUtil.delay(delay, onClick)));
-    }
-
     public static AdvanceClickListener clickListener(IAction onClick) {
         return new AdvanceClickListener(0, (event, x, y) -> onClick.invoke());
     }

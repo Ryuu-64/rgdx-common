@@ -11,12 +11,12 @@ public class ClickListeners {
     }
 
     public static <T extends Actor> T addDelayClickListener(T actor, IAction onClick) {
-        actor.addListener(clickListener(actor, 1 / 60f * 5, onClick));
+        actor.addListener(clickListener(actor, 1f / 60 * 8, 1f / 60 * 4, onClick));
         return actor;
     }
 
     public static <T extends Actor> T addDelayClickListener(T actor, float delay, IAction onClick) {
-        actor.addListener(clickListener(actor, delay, onClick));
+        actor.addListener(clickListener(actor, delay + 1f / 60 * 4, delay, onClick));
         return actor;
     }
 
