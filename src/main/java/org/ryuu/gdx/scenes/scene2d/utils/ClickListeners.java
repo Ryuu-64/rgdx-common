@@ -10,16 +10,6 @@ public class ClickListeners {
     private ClickListeners() {
     }
 
-    public static <T extends Actor> T addDelayClickListener(T actor, IAction onClick) {
-        actor.addListener(clickListener(actor, 1f / 60 * 8, 1f / 60 * 4, onClick));
-        return actor;
-    }
-
-    public static <T extends Actor> T addDelayClickListener(T actor, float delay, IAction onClick) {
-        actor.addListener(clickListener(actor, delay + 1f / 60 * 4, delay, onClick));
-        return actor;
-    }
-
     public static <T extends Actor> T addClickListener(T actor, IAction onClick) {
         actor.addListener(clickListener(onClick));
         return actor;
