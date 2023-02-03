@@ -5,7 +5,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 
 import static com.badlogic.gdx.utils.Align.*;
-import static com.badlogic.gdx.utils.Align.right;
 
 public class Actors {
     private Actors() {
@@ -77,25 +76,7 @@ public class Actors {
     }
 
     public static Vector2 getLocalToStagePosition(Actor actor, int pivot, float x, float y) {
-        float pivotX;
-        float pivotY;
-
-        if ((pivot & bottom) != 0) {
-            pivotY = 0;
-        } else if ((pivot & top) != 0) {
-            pivotY = 1;
-        } else {
-            pivotY = .5f;
-        }
-
-        if ((pivot & left) != 0) {
-            pivotX = 0;
-        } else if ((pivot & right) != 0) {
-            pivotX = 1;
-        } else {
-            pivotX = .5f;
-        }
-        return actor.localToStageCoordinates(new Vector2(actor.getWidth() * pivotX, actor.getHeight() * pivotY)).add(x, y);
+        return actor.localToStageCoordinates(new Vector2(actor.getWidth() * pivotX(pivot), actor.getHeight() * pivotY(pivot))).add(x, y);
     }
 
     public static Vector2 getLocalToActorPosition(Actor actor, int pivot, Actor reference) {
@@ -103,24 +84,26 @@ public class Actors {
     }
 
     public static Vector2 getLocalToActorPosition(Actor actor, int pivot, Actor reference, float x, float y) {
-        float pivotX;
-        float pivotY;
+        return actor.localToActorCoordinates(reference, new Vector2(actor.getWidth() * pivotX(pivot), actor.getHeight() * pivotY(pivot))).add(x, y);
+    }
 
-        if ((pivot & bottom) != 0) {
-            pivotY = 0;
-        } else if ((pivot & top) != 0) {
-            pivotY = 1;
-        } else {
-            pivotY = .5f;
-        }
-
+    private static float pivotX(int pivot) {
         if ((pivot & left) != 0) {
-            pivotX = 0;
+            return 0;
         } else if ((pivot & right) != 0) {
-            pivotX = 1;
+            return 1;
         } else {
-            pivotX = .5f;
+            return .5f;
         }
-        return actor.localToActorCoordinates(reference, new Vector2(actor.getWidth() * pivotX, actor.getHeight() * pivotY)).add(x, y);
+    }
+
+    private static float pivotY(int pivot) {
+        if ((pivot & bottom) != 0) {
+            return 0;
+        } else if ((pivot & top) != 0) {
+            return 1;
+        } else {
+            return .5f;
+        }
     }
 }
