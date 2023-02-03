@@ -142,7 +142,7 @@ public class SoundThreadPoolExecutor {
     @ToString
     public static class SoundWrapper {
         @Getter
-        private volatile AtomicLong soundId = new AtomicLong();
+        private final AtomicLong soundId = new AtomicLong();
         @Getter
         private volatile Sound sound;
     }
