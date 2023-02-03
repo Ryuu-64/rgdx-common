@@ -2,13 +2,12 @@ package org.ryuu.gdx.scenes.scene2d.utils;
 
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import org.ryuu.functional.IAction;
 
 public class ActionUtil {
     private ActionUtil() {
     }
 
-    public static Action of(IAction act) {
+    public static Action of(org.ryuu.functional.Action act) {
         return new Action() {
             @Override
             public boolean act(float delta) {
@@ -18,17 +17,17 @@ public class ActionUtil {
         };
     }
 
-    public static Action delay(float duration, IAction act) {
+    public static Action delay(float duration, org.ryuu.functional.Action act) {
         return Actions.delay(duration, of(act));
     }
 
-    public static Action foreverDelay(float duration, IAction act) {
+    public static Action foreverDelay(float duration, org.ryuu.functional.Action act) {
         return Actions.forever(Actions.sequence(
                 ActionUtil.delay(duration, act)
         ));
     }
 
-    public static Action foreverDelay(IAction act, float duration) {
+    public static Action foreverDelay(org.ryuu.functional.Action act, float duration) {
         act.invoke();
         return foreverDelay(duration, act);
     }

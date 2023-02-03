@@ -3,7 +3,7 @@ package org.ryuu.gdx.scenes.scene2d.utils;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import org.ryuu.functional.IAction;
+import org.ryuu.functional.Action;
 import org.ryuu.gdx.graphics.glutils.GetMaterial;
 import org.ryuu.gdx.graphics.glutils.Material;
 import org.ryuu.gdx.graphics.glutils.MaterialProperty;
@@ -17,11 +17,11 @@ public class ClickListenerFactory {
     private ClickListenerFactory() {
     }
 
-    public static AdvanceClickListener clickListener(Actor actor, float clickInterval, float delay, IAction onClick) {
+    public static AdvanceClickListener clickListener(Actor actor, float clickInterval, float delay, Action onClick) {
         return new AdvanceClickListener(clickInterval, (event, x, y) -> actor.addAction(ActionUtil.delay(delay, onClick)));
     }
 
-    public static AdvanceClickListener clickListener(IAction onClick) {
+    public static AdvanceClickListener clickListener(Action onClick) {
         return new AdvanceClickListener(0, (event, x, y) -> onClick.invoke());
     }
 

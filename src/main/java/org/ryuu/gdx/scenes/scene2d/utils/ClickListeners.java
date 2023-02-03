@@ -2,7 +2,7 @@ package org.ryuu.gdx.scenes.scene2d.utils;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import org.ryuu.functional.IAction;
+import org.ryuu.functional.Action;
 
 import static org.ryuu.gdx.scenes.scene2d.utils.ClickListenerFactory.*;
 
@@ -10,12 +10,12 @@ public class ClickListeners {
     private ClickListeners() {
     }
 
-    public static <T extends Actor> T addClickListener(T actor, IAction onClick) {
+    public static <T extends Actor> T addClickListener(T actor, Action onClick) {
         actor.addListener(clickListener(onClick));
         return actor;
     }
 
-    public static <T extends Actor> T addClickListener(T actor, float clickInterval, float delay, IAction onClick) {
+    public static <T extends Actor> T addClickListener(T actor, float clickInterval, float delay, Action onClick) {
         actor.addListener(clickListener(actor, clickInterval, delay, onClick));
         return actor;
     }

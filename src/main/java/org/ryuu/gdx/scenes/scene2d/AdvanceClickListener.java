@@ -4,13 +4,13 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import lombok.Getter;
 import lombok.Setter;
-import org.ryuu.functional.IAction3Arg;
+import org.ryuu.functional.Action3Args;
 
 public class AdvanceClickListener extends ClickListener {
     @Setter
     private float clickInterval;
     @Setter
-    private IAction3Arg<InputEvent, Float, Float> onClick;
+    private Action3Args<InputEvent, Float, Float> onClick;
     @Getter
     private long clickTimestamp = 0;
 
@@ -23,12 +23,12 @@ public class AdvanceClickListener extends ClickListener {
         this.clickInterval = clickInterval;
     }
 
-    public AdvanceClickListener(float clickInterval, IAction3Arg<InputEvent, Float, Float> onClick) {
+    public AdvanceClickListener(float clickInterval, Action3Args<InputEvent, Float, Float> onClick) {
         this.clickInterval = clickInterval;
         this.onClick = onClick;
     }
 
-    public AdvanceClickListener(int button, float clickInterval, IAction3Arg<InputEvent, Float, Float> onClick) {
+    public AdvanceClickListener(int button, float clickInterval, Action3Args<InputEvent, Float, Float> onClick) {
         super(button);
         this.clickInterval = clickInterval;
         this.onClick = onClick;
