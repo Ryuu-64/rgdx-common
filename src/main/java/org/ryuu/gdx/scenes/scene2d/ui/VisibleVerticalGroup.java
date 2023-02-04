@@ -16,19 +16,19 @@ public class VisibleVerticalGroup extends WidgetGroup {
     private float prefWidth;
     private float prefHeight;
     private float lastPrefWidth;
-    private boolean sizeInvalid = true;
+    private boolean isSizeInvalid = true;
     private FloatArray columnSizes;
     @Getter
     private int align = top;
     private int columnAlign;
     @Getter
-    private boolean reverse;
+    private boolean isReverse;
     @Setter
-    private boolean round = true;
+    private boolean isRound = true;
     @Getter
-    private boolean wrap;
+    private boolean isWrap;
     @Getter
-    private boolean expand;
+    private boolean isExpand;
     @Getter
     private float space;
     @Getter
@@ -51,26 +51,27 @@ public class VisibleVerticalGroup extends WidgetGroup {
     @Override
     public void invalidate() {
         super.invalidate();
-        sizeInvalid = true;
+        isSizeInvalid = true;
     }
 
     @Override
     public void layout() {
-        if (sizeInvalid) {
+        if (isSizeInvalid) {
             computeSize();
         }
 
-        if (wrap) {
+        if (isWrap) {
             layoutWrapped();
             return;
         }
 
-        boolean round = this.round;
+        boolean round = this.isRound;
         int align = this.align;
         float space = this.space;
         float padLeft = this.padLeft;
         float fill = this.fill;
-        float columnWidth = (expand ? getWidth() : prefWidth) - padLeft - padRight, y = prefHeight - padTop + space;
+        float columnWidth = (isExpand ? getWidth() : prefWidth) - padLeft - padRight;
+        float y = prefHeight - padTop + space;
 
         if ((align & top) != 0)
             y += getHeight() - prefHeight;
@@ -89,7 +90,7 @@ public class VisibleVerticalGroup extends WidgetGroup {
 
         SnapshotArray<Actor> children = getIsVisibleChildren();
         int i = 0, n = children.size, incr = 1;
-        if (reverse) {
+        if (isReverse) {
             i = n - 1;
             n = -1;
             incr = -1;
@@ -135,7 +136,7 @@ public class VisibleVerticalGroup extends WidgetGroup {
 
     @Override
     public float getPrefWidth() {
-        if (sizeInvalid) {
+        if (isSizeInvalid) {
             computeSize();
         }
         return prefWidth;
@@ -143,10 +144,10 @@ public class VisibleVerticalGroup extends WidgetGroup {
 
     @Override
     public float getPrefHeight() {
-        if (wrap) {
+        if (isWrap) {
             return 0;
         }
-        if (sizeInvalid) {
+        if (isSizeInvalid) {
             computeSize();
         }
         return prefHeight;
@@ -182,21 +183,27 @@ public class VisibleVerticalGroup extends WidgetGroup {
     }
 
     private void computeSize() {
-        sizeInvalid = false;
+        isSizeInvalid = false;
         SnapshotArray<Actor> children = getIsVisibleChildren();
         int n = children.size;
         prefWidth = 0;
-        if (wrap) {
+        if (isWrap) {
             prefHeight = 0;
             if (columnSizes == null)
                 columnSizes = new FloatArray();
             else
                 columnSizes.clear();
             FloatArray columnSizes = this.columnSizes;
-            float space = this.space, wrapSpace = this.wrapSpace;
-            float pad = padTop + padBottom, groupHeight = getHeight() - pad, x = 0, y = 0, columnWidth = 0;
-            int i = 0, increment = 1;
-            if (reverse) {
+            float space = this.space;
+            float wrapSpace = this.wrapSpace;
+            float pad = padTop + padBottom;
+            float groupHeight = getHeight() - pad;
+            float x = 0;
+            float y = 0;
+            float columnWidth = 0;
+            int i = 0;
+            int increment = 1;
+            if (isReverse) {
                 i = n - 1;
                 n = -1;
                 increment = -1;
@@ -249,7 +256,7 @@ public class VisibleVerticalGroup extends WidgetGroup {
             }
         }
         prefWidth += padLeft + padRight;
-        if (round) {
+        if (isRound) {
             prefWidth = Math.round(prefWidth);
             prefHeight = Math.round(prefHeight);
         }
@@ -263,11 +270,17 @@ public class VisibleVerticalGroup extends WidgetGroup {
         }
 
         int align = this.align;
-        boolean round = this.round;
-        float space = this.space, padLeft = this.padLeft, fill = this.fill, wrapSpace = this.wrapSpace;
+        boolean round = this.isRound;
+        float space = this.space;
+        float padLeft = this.padLeft;
+        float fill = this.fill;
+        float wrapSpace = this.wrapSpace;
         float maxHeight = prefHeight - padTop - padBottom;
-        float columnX = padLeft, groupHeight = getHeight();
-        float yStart = prefHeight - padTop + space, y = 0, columnWidth = 0;
+        float columnX = padLeft;
+        float groupHeight = getHeight();
+        float yStart = prefHeight - padTop + space;
+        float y = 0;
+        float columnWidth = 0;
 
         if ((align & right) != 0)
             columnX += getWidth() - prefWidth;
@@ -287,7 +300,7 @@ public class VisibleVerticalGroup extends WidgetGroup {
         int i = 0;
         int n = children.size;
         int incr = 1;
-        if (reverse) {
+        if (isReverse) {
             i = n - 1;
             n = -1;
             incr = -1;
@@ -308,7 +321,7 @@ public class VisibleVerticalGroup extends WidgetGroup {
             }
 
             if (y - height - space < padBottom || r == 0) {
-                r = Math.min(r, columnSizes.size - 2); // In case an actor changed size without invalidating this layout.
+                r = Math.min(r, columnSizes.size - 2); // in case an actor changed size without invalidating this layout.
                 y = yStart;
                 if ((align & bottom) != 0)
                     y -= maxHeight - columnSizes.get(r);
@@ -349,16 +362,16 @@ public class VisibleVerticalGroup extends WidgetGroup {
     }
 
     public int getColumns() {
-        return wrap ? columnSizes.size >> 1 : 1;
+        return isWrap ? columnSizes.size >> 1 : 1;
     }
 
     public VisibleVerticalGroup reverse() {
-        this.reverse = true;
+        this.isReverse = true;
         return this;
     }
 
     public VisibleVerticalGroup reverse(boolean reverse) {
-        this.reverse = reverse;
+        this.isReverse = reverse;
         return this;
     }
 
@@ -453,28 +466,28 @@ public class VisibleVerticalGroup extends WidgetGroup {
     }
 
     public VisibleVerticalGroup expand() {
-        expand = true;
+        isExpand = true;
         return this;
     }
 
     public VisibleVerticalGroup expand(boolean expand) {
-        this.expand = expand;
+        this.isExpand = expand;
         return this;
     }
 
     public VisibleVerticalGroup grow() {
-        expand = true;
+        isExpand = true;
         fill = 1;
         return this;
     }
 
     public VisibleVerticalGroup wrap() {
-        wrap = true;
+        isWrap = true;
         return this;
     }
 
     public VisibleVerticalGroup wrap(boolean wrap) {
-        this.wrap = wrap;
+        this.isWrap = wrap;
         return this;
     }
 
