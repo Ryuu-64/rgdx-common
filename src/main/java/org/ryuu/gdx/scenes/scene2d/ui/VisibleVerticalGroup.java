@@ -311,7 +311,8 @@ public class VisibleVerticalGroup extends WidgetGroup {
         for (int r = 0; i != n; i += incr) {
             Actor child = children.get(i);
 
-            float width, height;
+            float width;
+            float height;
             Layout layout = null;
             if (child instanceof Layout) {
                 layout = (Layout) child;
