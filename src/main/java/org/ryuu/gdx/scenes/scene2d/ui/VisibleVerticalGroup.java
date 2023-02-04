@@ -70,23 +70,20 @@ public class VisibleVerticalGroup extends WidgetGroup {
         float space = this.space;
         float padLeft = this.padLeft;
         float fill = this.fill;
-        float columnWidth = (expand ? getWidth() : prefWidth) - padLeft - padRight;
-        float y = prefHeight - padTop + space;
+        float columnWidth = (expand ? getWidth() : prefWidth) - padLeft - padRight, y = prefHeight - padTop + space;
 
-        if ((align & top) != 0) {
+        if ((align & top) != 0)
             y += getHeight() - prefHeight;
-        } else if ((align & bottom) == 0) { // center
+        else if ((align & bottom) == 0) // center
             y += (getHeight() - prefHeight) / 2;
-        }
 
         float startX;
-        if ((align & left) != 0) {
+        if ((align & left) != 0)
             startX = padLeft;
-        } else if ((align & right) != 0) {
+        else if ((align & right) != 0)
             startX = getWidth() - padRight - columnWidth;
-        } else {
+        else
             startX = padLeft + (getWidth() - padLeft - padRight - columnWidth) / 2;
-        }
 
         align = columnAlign;
 
@@ -100,7 +97,8 @@ public class VisibleVerticalGroup extends WidgetGroup {
         for (; i != n; i += incr) {
             Actor child = children.get(i);
 
-            float width, height;
+            float width;
+            float height;
             Layout layout = null;
             if (child instanceof Layout) {
                 layout = (Layout) child;
@@ -111,7 +109,27 @@ public class VisibleVerticalGroup extends WidgetGroup {
                 height = child.getHeight();
             }
 
-            y = getY(round, align, space, fill, columnWidth, y, startX, child, width, height, layout);
+            if (fill > 0) width = columnWidth * fill;
+
+            if (layout != null) {
+                width = Math.max(width, layout.getMinWidth());
+                float maxWidth = layout.getMaxWidth();
+                if (maxWidth > 0 && width > maxWidth) width = maxWidth;
+            }
+
+            float x = startX;
+            if ((align & right) != 0)
+                x += columnWidth - width;
+            else if ((align & left) == 0) // center
+                x += (columnWidth - width) / 2;
+
+            y -= height + space;
+            if (round)
+                child.setBounds(Math.round(x), Math.round(y), Math.round(width), Math.round(height));
+            else
+                child.setBounds(x, y, width, height);
+
+            if (layout != null) layout.validate();
         }
     }
 
@@ -175,15 +193,9 @@ public class VisibleVerticalGroup extends WidgetGroup {
             else
                 columnSizes.clear();
             FloatArray columnSizes = this.columnSizes;
-            float space = this.space;
-            float wrapSpace = this.wrapSpace;
-            float pad = padTop + padBottom;
-            float groupHeight = getHeight() - pad;
-            float x = 0;
-            float y = 0;
-            float columnWidth = 0;
-            int i = 0;
-            int increment = 1;
+            float space = this.space, wrapSpace = this.wrapSpace;
+            float pad = padTop + padBottom, groupHeight = getHeight() - pad, x = 0, y = 0, columnWidth = 0;
+            int i = 0, increment = 1;
             if (reverse) {
                 i = n - 1;
                 n = -1;
@@ -252,29 +264,20 @@ public class VisibleVerticalGroup extends WidgetGroup {
 
         int align = this.align;
         boolean round = this.round;
-        float space = this.space;
-        float padLeft = this.padLeft;
-        float fill = this.fill;
-        float wrapSpace = this.wrapSpace;
+        float space = this.space, padLeft = this.padLeft, fill = this.fill, wrapSpace = this.wrapSpace;
         float maxHeight = prefHeight - padTop - padBottom;
-        float columnX = padLeft;
-        float groupHeight = getHeight();
-        float yStart = prefHeight - padTop + space;
-        float y = 0;
-        float columnWidth = 0;
+        float columnX = padLeft, groupHeight = getHeight();
+        float yStart = prefHeight - padTop + space, y = 0, columnWidth = 0;
 
-        if ((align & right) != 0) {
+        if ((align & right) != 0)
             columnX += getWidth() - prefWidth;
-        } else if ((align & left) == 0) { // center
+        else if ((align & left) == 0) // center
             columnX += (getWidth() - prefWidth) / 2;
-        }
 
-        if ((align & top) != 0) {
+        if ((align & top) != 0)
             yStart += groupHeight - prefHeight;
-        } else if ((align & bottom) == 0) // center
-        {
+        else if ((align & bottom) == 0) // center
             yStart += (groupHeight - prefHeight) / 2;
-        }
 
         groupHeight -= padTop;
         align = columnAlign;
@@ -292,8 +295,7 @@ public class VisibleVerticalGroup extends WidgetGroup {
         for (int r = 0; i != n; i += incr) {
             Actor child = children.get(i);
 
-            float width;
-            float height;
+            float width, height;
             Layout layout = null;
             if (child instanceof Layout) {
                 layout = (Layout) child;
@@ -320,41 +322,30 @@ public class VisibleVerticalGroup extends WidgetGroup {
                 r += 2;
             }
 
-            y = getY(round, align, space, fill, columnWidth, y, columnX, child, width, height, layout);
-        }
-    }
-
-    private float getY(boolean round, int align, float space, float fill, float columnWidth, float y, float startX, Actor child, float width, float height, Layout layout) {
-        if (fill > 0) {
-            width = columnWidth * fill;
-        }
-
-        if (layout != null) {
-            width = Math.max(width, layout.getMinWidth());
-            float maxWidth = layout.getMaxWidth();
-            if (maxWidth > 0 && width > maxWidth) {
-                width = maxWidth;
+            if (fill > 0) {
+                width = columnWidth * fill;
             }
-        }
 
-        float x = startX;
-        if ((align & right) != 0) {
-            x += columnWidth - width;
-        } else if ((align & left) == 0) { // center
-            x += (columnWidth - width) / 2;
-        }
+            if (layout != null) {
+                width = Math.max(width, layout.getMinWidth());
+                float maxWidth = layout.getMaxWidth();
+                if (maxWidth > 0 && width > maxWidth) width = maxWidth;
+            }
 
-        y -= height + space;
-        if (round) {
-            child.setBounds(Math.round(x), Math.round(y), Math.round(width), Math.round(height));
-        } else {
-            child.setBounds(x, y, width, height);
-        }
+            float x = columnX;
+            if ((align & right) != 0)
+                x += columnWidth - width;
+            else if ((align & left) == 0) // center
+                x += (columnWidth - width) / 2;
 
-        if (layout != null) {
-            layout.validate();
+            y -= height + space;
+            if (round)
+                child.setBounds(Math.round(x), Math.round(y), Math.round(width), Math.round(height));
+            else
+                child.setBounds(x, y, width, height);
+
+            if (layout != null) layout.validate();
         }
-        return y;
     }
 
     public int getColumns() {
