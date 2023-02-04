@@ -89,7 +89,9 @@ public class VisibleVerticalGroup extends WidgetGroup {
         align = columnAlign;
 
         SnapshotArray<Actor> children = getIsVisibleChildren();
-        int i = 0, n = children.size, incr = 1;
+        int i = 0;
+        int n = children.size;
+        int incr = 1;
         if (isReverse) {
             i = n - 1;
             n = -1;
@@ -211,7 +213,8 @@ public class VisibleVerticalGroup extends WidgetGroup {
             for (; i != n; i += increment) {
                 Actor child = children.get(i);
 
-                float width, height;
+                float width;
+                float height;
                 if (child instanceof Layout) {
                     Layout layout = (Layout) child;
                     width = layout.getPrefWidth();
