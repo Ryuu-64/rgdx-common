@@ -67,9 +67,7 @@ public class VisibleVerticalGroup extends WidgetGroup {
         }
 
         updateVisibleChildren();
-        for (int i = 0; i != visibleChildren.size; i++) {
-            Actor child = visibleChildren.get(i);
-
+        for (Actor child : visibleChildren) {
             float width;
             float height;
             Layout layout = null;
@@ -85,7 +83,6 @@ public class VisibleVerticalGroup extends WidgetGroup {
                 width = child.getWidth();
                 height = child.getHeight();
             }
-
 
             y -= height + spacing;
 
@@ -144,10 +141,8 @@ public class VisibleVerticalGroup extends WidgetGroup {
 
         isSizeInvalid = false;
         updateVisibleChildren();
-        int childrenCount = visibleChildren.size;
-        prefHeight = padTop + padBottom + spacing * (childrenCount - 1);
-        for (int i = 0; i < childrenCount; i++) {
-            Actor child = visibleChildren.get(i);
+        prefHeight = padTop + padBottom + spacing * (visibleChildren.size - 1);
+        for (Actor child : visibleChildren) {
             if (child instanceof Layout) {
                 Layout layout = (Layout) child;
                 prefWidth = Math.max(prefWidth, layout.getPrefWidth());
@@ -168,21 +163,5 @@ public class VisibleVerticalGroup extends WidgetGroup {
             childX += (columnWidth - width) / 2;
         }
         return childX;
-    }
-
-    public VisibleVerticalGroup setPadding(float pad) {
-        padTop = pad;
-        padLeft = pad;
-        padBottom = pad;
-        padRight = pad;
-        return this;
-    }
-
-    public VisibleVerticalGroup setPadding(float top, float left, float bottom, float right) {
-        padTop = top;
-        padLeft = left;
-        padBottom = bottom;
-        padRight = right;
-        return this;
     }
 }
