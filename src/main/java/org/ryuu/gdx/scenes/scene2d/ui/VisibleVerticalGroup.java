@@ -50,7 +50,6 @@ public class VisibleVerticalGroup extends WidgetGroup {
         tryComputePrefSize();
 
         float y = prefHeight - padTop + spacing;
-
         if ((align & top) != 0) {
             y += getHeight() - prefHeight;
         } else if ((align & bottom) == 0) {
@@ -58,13 +57,13 @@ public class VisibleVerticalGroup extends WidgetGroup {
         }
 
         float columnWidth = prefWidth - padLeft - padRight;
-        float startX;
+        float x;
         if ((align & left) != 0) {
-            startX = padLeft;
+            x = padLeft;
         } else if ((align & right) != 0) {
-            startX = getWidth() - padRight - columnWidth;
+            x = getWidth() - padRight - columnWidth;
         } else {
-            startX = padLeft + (getWidth() - padLeft - padRight - columnWidth) / 2;
+            x = padLeft + (getWidth() - padLeft - padRight - columnWidth) / 2;
         }
 
         updateVisibleChildren();
@@ -87,16 +86,10 @@ public class VisibleVerticalGroup extends WidgetGroup {
                 height = child.getHeight();
             }
 
-            float x = startX;
-            if ((align & right) != 0) {
-                x += columnWidth - width;
-            } else if ((align & left) == 0) {
-                x += (columnWidth - width) / 2;
-            }
 
             y -= height + spacing;
 
-            child.setBounds(x, y, width, height);
+            child.setBounds(getChildX(columnWidth, x, width), y, width, height);
 
             if (layout != null) {
                 layout.validate();
@@ -165,6 +158,16 @@ public class VisibleVerticalGroup extends WidgetGroup {
             }
         }
         prefWidth += padLeft + padRight;
+    }
+
+    private float getChildX(float columnWidth, float x, float width) {
+        float childX = x;
+        if ((align & right) != 0) {
+            childX += columnWidth - width;
+        } else if ((align & left) == 0) {
+            childX += (columnWidth - width) / 2;
+        }
+        return childX;
     }
 
     public VisibleVerticalGroup setPadding(float pad) {
