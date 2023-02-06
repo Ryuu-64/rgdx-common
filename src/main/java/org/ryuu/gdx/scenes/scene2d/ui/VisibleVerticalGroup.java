@@ -47,11 +47,8 @@ public class VisibleVerticalGroup extends WidgetGroup {
 
     @Override
     public void layout() {
-        if (isSizeInvalid) {
-            computePrefSize();
-        }
+        tryComputePrefSize();
 
-        float columnWidth = prefWidth - padLeft - padRight;
         float y = prefHeight - padTop + spacing;
 
         if ((align & top) != 0) {
@@ -60,6 +57,7 @@ public class VisibleVerticalGroup extends WidgetGroup {
             y += (getHeight() - prefHeight) / 2;
         }
 
+        float columnWidth = prefWidth - padLeft - padRight;
         float startX;
         if ((align & left) != 0) {
             startX = padLeft;
@@ -112,17 +110,13 @@ public class VisibleVerticalGroup extends WidgetGroup {
 
     @Override
     public float getPrefWidth() {
-        if (isSizeInvalid) {
-            computePrefSize();
-        }
+        tryComputePrefSize();
         return prefWidth;
     }
 
     @Override
     public float getPrefHeight() {
-        if (isSizeInvalid) {
-            computePrefSize();
-        }
+        tryComputePrefSize();
         return prefHeight;
     }
 
@@ -154,7 +148,11 @@ public class VisibleVerticalGroup extends WidgetGroup {
         }
     }
 
-    private void computePrefSize() {
+    private void tryComputePrefSize() {
+        if (!isSizeInvalid) {
+            return;
+        }
+
         isSizeInvalid = false;
         updateVisibleChildren();
         int childrenCount = visibleChildren.size;
