@@ -17,15 +17,6 @@ public class ActionUtil {
         };
     }
 
-    public static Action of(org.ryuu.functional.Func1Arg<Float, Boolean> act) {
-        return new Action() {
-            @Override
-            public boolean act(float delta) {
-                return act.invoke(delta);
-            }
-        };
-    }
-
     public static Action delay(float duration, org.ryuu.functional.Action act) {
         return Actions.delay(duration, of(act));
     }
