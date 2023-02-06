@@ -76,19 +76,15 @@ public class VisibleVerticalGroup extends WidgetGroup {
             Layout layout = null;
             if (child instanceof Layout) {
                 layout = (Layout) child;
-                width = layout.getPrefWidth();
-                height = layout.getPrefHeight();
-            } else {
-                width = child.getWidth();
-                height = child.getHeight();
-            }
-
-            if (layout != null) {
-                width = Math.max(width, layout.getMinWidth());
+                width = Math.max(layout.getPrefWidth(), layout.getMinWidth());
                 float maxWidth = layout.getMaxWidth();
                 if (maxWidth > 0 && width > maxWidth) {
                     width = maxWidth;
                 }
+                height = layout.getPrefHeight();
+            } else {
+                width = child.getWidth();
+                height = child.getHeight();
             }
 
             float x = startX;
