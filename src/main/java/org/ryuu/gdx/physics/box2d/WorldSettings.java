@@ -8,16 +8,8 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class WorldSettings {
-    @Getter
-    @Setter
-    private float fixedTimeStep;
-    @Getter
-    @Setter
-    private float maxStepTime;
-    @Getter
-    @Setter
-    private int velocityIterations;
-    @Getter
-    @Setter
-    private int positionIterations;
+    public final float fixedTimeStep;
+    public final float maxStepTime;
+    public final int velocityIterations;
+    public final int positionIterations;
 }

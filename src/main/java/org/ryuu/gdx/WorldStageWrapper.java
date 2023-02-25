@@ -30,10 +30,10 @@ public class WorldStageWrapper extends DefaultStageWrapper {
     @Override
     public void render(float delta) {
         super.render(delta);
-        stepTime += Math.min(delta, worldSettings.getMaxStepTime()); // avoid death spiral
-        float fixedTimeStep = worldSettings.getFixedTimeStep();
+        stepTime += Math.min(delta, worldSettings.maxStepTime); // avoid death spiral
+        float fixedTimeStep = worldSettings.fixedTimeStep;
         while (stepTime >= fixedTimeStep) {
-            world.step(fixedTimeStep, worldSettings.getVelocityIterations(), worldSettings.getPositionIterations());
+            world.step(fixedTimeStep, worldSettings.velocityIterations, worldSettings.positionIterations);
             stepTime -= fixedTimeStep;
         }
         box2DDebugRenderer.render(world, orthographicCamera.combined);
