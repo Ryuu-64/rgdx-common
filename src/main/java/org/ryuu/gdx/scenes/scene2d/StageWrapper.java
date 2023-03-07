@@ -1,4 +1,4 @@
-package org.ryuu.gdx;
+package org.ryuu.gdx.scenes.scene2d;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -9,6 +9,8 @@ import lombok.Getter;
 import org.ryuu.functional.Action;
 import org.ryuu.functional.Action2Args;
 import org.ryuu.functional.Actions;
+import org.ryuu.gdx.InputProcessorManagement;
+import org.ryuu.gdx.MulticastApplicationListener;
 
 public class StageWrapper implements Disposable {
     @Getter

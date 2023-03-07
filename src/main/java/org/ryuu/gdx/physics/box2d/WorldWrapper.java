@@ -9,6 +9,8 @@ import com.badlogic.gdx.utils.Disposable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
+import org.ryuu.functional.Action;
+import org.ryuu.gdx.scenes.scene2d.StageWrapper;
 import org.ryuu.gdx.physics.box2d.interfacecontact.InterfaceContactListener;
 
 public class WorldWrapper implements Disposable {
@@ -21,21 +23,31 @@ public class WorldWrapper implements Disposable {
     private final OrthographicCamera camera;
     private float stepTime = 0;
 
-    public WorldWrapper(Settings settings, OrthographicCamera camera) {
-        this.camera = camera;
+    public WorldWrapper(Settings settings, StageWrapper stageWrapper) {
+        if (settings == null) {
+            throw new IllegalArgumentException();
+        }
         this.settings = settings;
 
-        if (camera == null) {
+        if (stageWrapper == null) {
             throw new IllegalArgumentException();
         }
 
-        if (settings == null) {
+        this.camera = stageWrapper.getOrthographicCamera();
+        if (camera == null) {
             throw new IllegalArgumentException();
         }
 
         world = new World(settings.gravity, settings.isSleep);
         world.setContactListener(new InterfaceContactListener());
         box2DDebugRenderer = new Box2DDebugRenderer();
+
+        Action render = this::render;
+        stageWrapper.afterDraw.add(render);
+        stageWrapper.dispose.add(() -> {
+            dispose();
+            stageWrapper.afterDraw.remove(render);
+        });
     }
 
     public void render() {
