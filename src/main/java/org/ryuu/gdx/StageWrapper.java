@@ -6,9 +6,11 @@ import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import lombok.Getter;
+import org.ryuu.functional.Action;
+import org.ryuu.functional.Action2Args;
 import org.ryuu.functional.Actions;
 
-public class DefaultStageWrapper implements Disposable {
+public class StageWrapper implements Disposable {
     @Getter
     protected final OrthographicCamera orthographicCamera;
     @Getter
@@ -18,7 +20,7 @@ public class DefaultStageWrapper implements Disposable {
     public final Actions afterDraw = new Actions();
     public final Actions dispose = new Actions();
 
-    public DefaultStageWrapper(float designWorldWidth, float designWorldHeight) {
+    public StageWrapper(float designWorldWidth, float designWorldHeight) {
         orthographicCamera = new OrthographicCamera();
         viewport = new ExtendViewport(designWorldWidth, designWorldHeight, orthographicCamera);
         stage = new Stage(viewport);
@@ -39,5 +41,16 @@ public class DefaultStageWrapper implements Disposable {
     public void dispose() {
         stage.dispose();
         dispose.invoke();
+    }
+
+    public void attachTo(MulticastApplicationListener applicationListener) {
+        Action render = this::render;
+        Action2Args<Integer, Integer> resize = this::resize;
+        applicationListener.render.add(render);
+        applicationListener.resize.add(resize);
+        dispose.add(() -> {
+            applicationListener.render.remove(render);
+            applicationListener.resize.remove(resize);
+        });
     }
 }
