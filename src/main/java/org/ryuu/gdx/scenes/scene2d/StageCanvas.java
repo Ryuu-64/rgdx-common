@@ -1,9 +1,7 @@
 package org.ryuu.gdx.scenes.scene2d;
 
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Disposable;
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import lombok.Getter;
 import org.ryuu.functional.Action;
@@ -12,25 +10,24 @@ import org.ryuu.functional.Actions;
 import org.ryuu.gdx.InputProcessorManagement;
 import org.ryuu.gdx.MulticastApplicationListener;
 
-public class StageWrapper implements Disposable {
-    @Getter
-    protected final OrthographicCamera orthographicCamera;
+public class StageCanvas implements Disposable {
     @Getter
     protected final Viewport viewport;
     @Getter
     protected final Stage stage;
+    public final Actions beforeDraw = new Actions();
     public final Actions afterDraw = new Actions();
     public final Actions dispose = new Actions();
 
-    public StageWrapper(float designWorldWidth, float designWorldHeight) {
-        orthographicCamera = new OrthographicCamera();
-        viewport = new ExtendViewport(designWorldWidth, designWorldHeight, orthographicCamera);
+    public StageCanvas(Viewport viewport) {
+        this.viewport = viewport;
         stage = new Stage(viewport);
         InputProcessorManagement.getInputMultiplexer().addProcessor(stage);
     }
 
     public void render() {
         stage.act();
+        beforeDraw.invoke();
         stage.draw();
         afterDraw.invoke();
     }
