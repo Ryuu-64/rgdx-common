@@ -10,12 +10,11 @@ import org.ryuu.functional.Actions;
 import org.ryuu.gdx.InputProcessorManagement;
 import org.ryuu.gdx.MulticastApplicationListener;
 
-public class StageCanvas implements Disposable {
+public class StageCanvas implements Canvas, Disposable {
     @Getter
     protected final Viewport viewport;
     @Getter
     protected final Stage stage;
-    public final Actions beforeDraw = new Actions();
     public final Actions afterDraw = new Actions();
     public final Actions dispose = new Actions();
 
@@ -27,7 +26,6 @@ public class StageCanvas implements Disposable {
 
     public void render() {
         stage.act();
-        beforeDraw.invoke();
         stage.draw();
         afterDraw.invoke();
     }

@@ -25,30 +25,33 @@ public class WorldWrapper implements Disposable {
 
     public WorldWrapper(Settings settings, StageCanvas stageCanvas) {
         if (settings == null) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("settings can't be null");
         }
         this.settings = settings;
 
         if (stageCanvas == null) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("stage canvas can't be null");
         }
 
         this.camera = stageCanvas.getViewport().getCamera();
         if (camera == null) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("camera can't be null");
         }
 
         world = new World(settings.gravity, settings.isSleep);
         world.setContactListener(new InterfaceContactListener());
-        box2DDebugRenderer = new Box2DDebugRenderer();
+        box2DDebugRenderer = new Box2DDebugRenderer(
+                false, false, false,
+                false, false, false
+        );
 
-        Action render = this::render;
-        Action step = this::step;
-        stageCanvas.beforeDraw.add(step);
+        Action render = () -> {
+            render();
+            step();
+        };
         stageCanvas.afterDraw.add(render);
         stageCanvas.dispose.add(() -> {
             dispose();
-            stageCanvas.beforeDraw.remove(step);
             stageCanvas.afterDraw.remove(render);
         });
     }
