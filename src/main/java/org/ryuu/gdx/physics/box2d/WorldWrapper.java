@@ -11,7 +11,7 @@ import lombok.Getter;
 import lombok.ToString;
 import org.ryuu.functional.Action;
 import org.ryuu.gdx.physics.box2d.interfacecontact.InterfaceContactListener;
-import org.ryuu.gdx.scenes.scene2d.StageCanvas;
+import org.ryuu.gdx.scenes.scene2d.Canvas;
 
 public class WorldWrapper implements Disposable {
     @Getter
@@ -23,17 +23,17 @@ public class WorldWrapper implements Disposable {
     private final Camera camera;
     private float stepTime = 0;
 
-    public WorldWrapper(Settings settings, StageCanvas stageCanvas) {
+    public WorldWrapper(Settings settings, Canvas canvas) {
         if (settings == null) {
             throw new IllegalArgumentException("settings can't be null");
         }
         this.settings = settings;
 
-        if (stageCanvas == null) {
+        if (canvas == null) {
             throw new IllegalArgumentException("stage canvas can't be null");
         }
 
-        this.camera = stageCanvas.getViewport().getCamera();
+        this.camera = canvas.getViewport().getCamera();
         if (camera == null) {
             throw new IllegalArgumentException("camera can't be null");
         }
@@ -49,10 +49,10 @@ public class WorldWrapper implements Disposable {
             render();
             step();
         };
-        stageCanvas.afterDraw.add(render);
-        stageCanvas.dispose.add(() -> {
+        canvas.afterDraw.add(render);
+        canvas.dispose.add(() -> {
             dispose();
-            stageCanvas.afterDraw.remove(render);
+            canvas.afterDraw.remove(render);
         });
     }
 

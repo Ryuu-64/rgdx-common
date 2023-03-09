@@ -1,8 +1,11 @@
 package org.ryuu.gdx.scenes.scene2d.utils;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Align;
 
 import static com.badlogic.gdx.utils.Align.*;
 
@@ -10,17 +13,59 @@ public class Actors {
     private Actors() {
     }
 
-    public static void align(Actor actor, int align) {
-        align(actor, align, align);
+    public static void align(Actor actor, int alignSelf, Actor reference, int alignReference) {
+        if (actor == reference) {
+            return;
+        }
+
+        Stage actorStage = actor.getStage();
+        Group actorRoot = actorStage.getRoot();
+        if (reference == actorRoot) {
+            actor.setPosition(
+                    actorStage.getWidth() * pivotX(alignReference),
+                    actorStage.getHeight() * pivotY(alignReference),
+                    alignSelf
+            );
+            return;
+        }
+
+        Stage referenceStage = reference.getStage();
+
+        if (actorStage != referenceStage) {
+            Vector3 vector3 = new Vector3(reference.getX(alignReference), reference.getY(alignReference), 0);
+            referenceStage.getCamera().project(vector3);
+            actorStage.getCamera().unproject(vector3);
+            actor.setPosition(vector3.x, vector3.y, alignSelf);
+            return;
+        }
+
+        actor.setPosition(
+                reference.getX(alignReference) - reference.getX(),
+                reference.getY(alignReference) - reference.getY(),
+                alignSelf
+        );
     }
 
-    public static void align(Actor actor, int align, float x, float y) {
-        align(actor, align, align, x, y);
+    public static void align(Actor actor, int alignSelf, Actor reference, int alignReference, float x, float y) {
+        align(actor, alignSelf, reference, alignReference);
+        actor.moveBy(x, y);
+    }
+
+    public static void align(Actor actor, Actor reference, int align) {
+        align(actor, align, reference, align);
+    }
+
+    public static void align(Actor actor, Actor reference, int align, float x, float y) {
+        align(actor, reference, align);
+        actor.moveBy(x, y);
     }
 
     public static void align(Actor actor, int alignSelf, int alignParent) {
-        Group parent = actor.getParent();
-        actor.setPosition(parent.getX(alignParent) - parent.getX(), parent.getY(alignParent) - parent.getY(), alignSelf);
+        align(actor, alignSelf, actor.getParent(), alignParent);
+    }
+
+    public static void align(Actor actor, int align) {
+        align(actor, align, align);
     }
 
     public static void align(Actor actor, int alignSelf, int alignParent, float x, float y) {
@@ -28,22 +73,8 @@ public class Actors {
         actor.moveBy(x, y);
     }
 
-    public static void align(Actor actor, Actor reference, int align) {
-        actor.setPosition(reference.getX(align), reference.getY(align), align);
-    }
-
-    public static void align(Actor actor, Actor reference, int align, float x, float y) {
-        actor.setPosition(reference.getX(align), reference.getY(align), align);
-        actor.moveBy(x, y);
-    }
-
-    public static void align(Actor actor, int alignSelf, Actor reference, int alignReference) {
-        actor.setPosition(reference.getX(alignReference), reference.getY(alignReference), alignSelf);
-    }
-
-    public static void align(Actor actor, int alignSelf, Actor reference, int alignReference, float x, float y) {
-        align(actor, alignSelf, reference, alignReference);
-        actor.moveBy(x, y);
+    public static void align(Actor actor, int align, float x, float y) {
+        align(actor, align, align, x, y);
     }
 
     public static void setSize(Actor actor, Actor reference) {
@@ -87,6 +118,9 @@ public class Actors {
         return actor.localToActorCoordinates(reference, new Vector2(actor.getWidth() * pivotX(pivot), actor.getHeight() * pivotY(pivot))).add(x, y);
     }
 
+    /**
+     * @param pivot {@link Align}
+     */
     private static float pivotX(int pivot) {
         if ((pivot & left) != 0) {
             return 0;
@@ -97,6 +131,9 @@ public class Actors {
         }
     }
 
+    /**
+     * @param pivot {@link Align}
+     */
     private static float pivotY(int pivot) {
         if ((pivot & bottom) != 0) {
             return 0;

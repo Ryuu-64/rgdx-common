@@ -4,10 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 
 public class Shaders {
+    @SuppressWarnings("GDXJavaStaticResource")
     public static final ShaderProgram GRAY_SCALE;
+    @SuppressWarnings("GDXJavaStaticResource")
     public static final ShaderProgram HDR;
     public static final String HDR_COLOR_ATTRIBUTE = "a_hdrColor";
     public static final String INTENSITY_ATTRIBUTE = "a_intensity";
+    @SuppressWarnings("GDXJavaStaticResource")
     public static final ShaderProgram CLIPPING;
     public static final String BOTTOM_LEFT_ATTRIBUTE = "a_bottomLeft";
     public static final String TOP_RIGHT_ATTRIBUTE = "a_topRight";
