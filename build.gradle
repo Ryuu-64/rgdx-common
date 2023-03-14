@@ -1,7 +1,7 @@
 apply plugin: 'java'
 
 group 'org.ryuu'
-version '2.0.2-1.9.9'
+version '2.0.3-1.9.9'
 
 repositories {
     mavenCentral()
