@@ -1,6 +1,7 @@
 package org.ryuu.gdx.scenes.scene2d.utils;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -47,7 +48,7 @@ public class Actors {
         }
 
         Stage referenceStage = reference.getStage();
-        if (actorStage != referenceStage) {
+        if (actorStage != null && referenceStage != null && actorStage != referenceStage) {
             Vector3 vector3 = new Vector3(reference.getX(alignReference), reference.getY(alignReference), 0);
             referenceStage.getCamera().project(vector3);
             vector3.y = Gdx.graphics.getHeight() - vector3.y;
@@ -56,8 +57,11 @@ public class Actors {
             return;
         }
 
-        Vector2 localToActorPosition = getLocalToActorPosition(reference, alignReference, actor.getParent());
-        actor.setPosition(localToActorPosition.x, localToActorPosition.y, alignSelf);
+        actor.setPosition(
+                reference.getX(alignReference),
+                reference.getY(alignReference),
+                alignSelf
+        );
     }
 
     public static void align(Actor actor, int alignSelf, Actor reference, int alignReference, float x, float y) {
