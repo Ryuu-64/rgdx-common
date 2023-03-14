@@ -20,20 +20,30 @@ public class Actors {
 
         Group actorParent = actor.getParent();
         Group referenceParent = reference.getParent();
-        if (reference == actorParent || actorParent == referenceParent) {
+        if (reference == actorParent) {
+            actor.setPosition(
+                    reference.getWidth() * alignX(alignReference),
+                    reference.getHeight() * alignY(alignReference),
+                    alignSelf
+            );
+        }
+
+        if (actorParent == referenceParent) {
             actor.setPosition(reference.getX(alignReference), reference.getY(alignReference), alignSelf);
             return;
         }
 
         Stage actorStage = actor.getStage();
-        Group actorRoot = actorStage.getRoot();
-        if (reference == actorRoot) {
-            actor.setPosition(
-                    actorStage.getWidth() * alignX(alignReference),
-                    actorStage.getHeight() * alignY(alignReference),
-                    alignSelf
-            );
-            return;
+        if (actorStage != null) {
+            Group actorRoot = actorStage.getRoot();
+            if (reference == actorRoot) {
+                actor.setPosition(
+                        actorStage.getWidth() * alignX(alignReference),
+                        actorStage.getHeight() * alignY(alignReference),
+                        alignSelf
+                );
+                return;
+            }
         }
 
         Stage referenceStage = reference.getStage();
