@@ -1,0 +1,3 @@
+rootProject.name = 'rgdx-common-test'
+include 'desktop', 'android', 'ios', 'core', ':rgdx-common'
+project(':rgdx-common').projectDir = file('../')
