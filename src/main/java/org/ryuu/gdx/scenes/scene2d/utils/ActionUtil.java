@@ -2,6 +2,7 @@ package org.ryuu.gdx.scenes.scene2d.utils;
 
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import org.ryuu.functional.util.FunctionalUtils;
 
 public class ActionUtil {
     private ActionUtil() {
@@ -11,7 +12,7 @@ public class ActionUtil {
         return new Action() {
             @Override
             public boolean act(float delta) {
-                act.invoke();
+                FunctionalUtils.invokeNonNull(act);
                 return true;
             }
         };
@@ -22,13 +23,11 @@ public class ActionUtil {
     }
 
     public static Action foreverDelay(float duration, org.ryuu.functional.Action act) {
-        return Actions.forever(Actions.sequence(
-                ActionUtil.delay(duration, act)
-        ));
+        return Actions.forever(ActionUtil.delay(duration, act));
     }
 
     public static Action foreverDelay(org.ryuu.functional.Action act, float duration) {
-        act.invoke();
+        FunctionalUtils.invokeNonNull(act);
         return foreverDelay(duration, act);
     }
 }

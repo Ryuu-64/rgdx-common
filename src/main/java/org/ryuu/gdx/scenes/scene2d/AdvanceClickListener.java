@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import lombok.Getter;
 import lombok.Setter;
 import org.ryuu.functional.Action3Args;
+import org.ryuu.functional.util.FunctionalUtils;
 
 public class AdvanceClickListener extends ClickListener {
     @Setter
@@ -39,9 +40,8 @@ public class AdvanceClickListener extends ClickListener {
         if (System.currentTimeMillis() < clickTimestamp + (long) (clickInterval * 1_000L)) {
             return;
         }
-        if (onClick != null) {
-            onClick.invoke(event, x, y);
-        }
+
+        FunctionalUtils.invokeNonNull(onClick, event, x, y);
         clickTimestamp = System.currentTimeMillis();
     }
 }
